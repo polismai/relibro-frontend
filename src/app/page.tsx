@@ -1,9 +1,11 @@
+import Hero from "@/components/hero";
+
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col p-4">
+    <div className="min-h-screen flex flex-col">
       <main>
         <section className="w-full mx-auto">
-          {/* <HomeHero />  */}
+          <Hero />
         </section>
       </main>
     </div>
