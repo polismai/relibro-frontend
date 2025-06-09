@@ -1,7 +1,11 @@
 export default function Home() {
   return (
-    <main>
-      Hello from Home
-    </main>
+    <div className="min-h-screen flex flex-col p-4">
+      <main>
+        <section className="w-full mx-auto">
+          {/* <HomeHero />  */}
+        </section>
+      </main>
+    </div>
   )
 }

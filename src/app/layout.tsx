@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/navbar";
 
 const quicksand = Quicksand({ subsets: ['latin'] });
 
@@ -15,10 +16,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={quicksand.className}>
-        {children}
+    <html lang="es" className={quicksand.className}>
+      <body className="min-h-screen flex flex-col">
+        <header className="w-full">
+          <Navbar />
+        </header>
+        <main className="flex-grow">
+          {children}
+        </main>
+        {/* <Footer /> */}
       </body>
     </html>
   );
 }
+
+
