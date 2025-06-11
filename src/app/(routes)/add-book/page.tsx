@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const categories = [
-  { label: "ESCOLAR", value: "SCHOOL" },
-  { label: "LITERARIO", value: "STORY" },
+  { label: "ESCOLAR", value: "school" },
+  { label: "LITERARIO", value: "story" },
 ];
 
 export default function AddBookPage() {
   const router = useRouter();
+  const token = localStorage.getItem("token");
   const [form, setForm] = useState({
     title: "",
     author: "",
@@ -48,13 +49,19 @@ export default function AddBookPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/books", {
+      const res = await fetch("http://localhost:3001/api/books", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Error al crear el libro");
-
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message.split("::")[1] || "Error al cargar el libro");
+      }
+      
       router.push("/");
     } catch (error) {
       console.error(error);
