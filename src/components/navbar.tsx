@@ -15,15 +15,20 @@ const Navbar = () => {
           Re<span className="font-bold">Libro</span>
         </h1>
 
-        <div className="flex items-center gap-4 sm:gap-7">
-          {user && <span className="text-sm">Hola, {user.firstName}</span>}
-
+        <div className="flex items-center gap-2 sm:gap-7">
+          
           <User
             strokeWidth="1"
             className="cursor-pointer hover:text-white transition-colors"
             aria-label="Perfil del usuario"
             onClick={() => router.push("/profile")}
           />
+
+          {user && (
+            <span className="text-sm">
+              Hola, {user.firstName}
+            </span>
+          )}
 
           <ShoppingCart
             strokeWidth="1"

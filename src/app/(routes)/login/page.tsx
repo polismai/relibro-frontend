@@ -28,6 +28,7 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(form),
+        credentials: "include",
       });
 
       if (!res.ok) {
@@ -36,7 +37,7 @@ export default function LoginPage() {
       }
 
       const data = await res.json();
-      login(data.user, data.accessToken);
+      login(data.user);
       router.push("/"); 
     } catch (err) {
       const error = err as Error;

@@ -12,8 +12,7 @@ type User = {
 
 type AuthContextType = {
   user: User | null;
-  token: string | null;
-  login: (user: User, token: string) => void;
+  login: (user: User) => void;
   logout: () => void;
 };
 
@@ -21,36 +20,41 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/api/auth/me', {
+          credentials: 'include',
+        });
 
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-    }
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Error al obtener el usuario:', error);
+        setUser(null);
+      }
+    };
+
+    fetchUser();
   }, []);
 
-  const login = (userData: User, tokenData: string) => {
-    localStorage.setItem('token', tokenData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setToken(tokenData);
+  const login = (userData: User) => {
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setToken(null);
     setUser(null);
     router.push('/');
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -61,3 +65,4 @@ export const useAuth = () => {
   if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
+
