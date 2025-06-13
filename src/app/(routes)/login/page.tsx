@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../../context/AuthContext";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -21,6 +22,8 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
+    const toastId = toast.loading("Iniciando sesión...");
+
     try {
       const res = await fetch("http://localhost:3001/api/auth/login", {
         method: "POST",
@@ -31,6 +34,8 @@ export default function LoginPage() {
         credentials: "include",
       });
 
+      toast.dismiss(toastId);
+
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message.split("::")[1] || 'Credenciales incorrectas');
@@ -38,10 +43,19 @@ export default function LoginPage() {
 
       const data = await res.json();
       login(data.user);
+
+      toast.success("Sesión iniciada con éxito", {
+        description: `Bienvenida, ${data.user.firstName}`,
+        duration: 3000,
+      });
+
       router.push("/"); 
     } catch (err) {
+      toast.dismiss(toastId);
+
       const error = err as Error;
       console.error(error);
+
       setError(error.message || "Error desconocido");
     } finally {
       setLoading(false);

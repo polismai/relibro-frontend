@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const categories = [
   { label: "ESCOLAR", value: "school" },
@@ -10,7 +11,6 @@ const categories = [
 
 export default function AddBookPage() {
   const router = useRouter();
-  const token = localStorage.getItem("token");
   const [form, setForm] = useState({
     title: "",
     author: "",
@@ -48,24 +48,34 @@ export default function AddBookPage() {
       });
     }
 
+    const toastId = toast.loading("Cargando libro...");
+
     try {
       const res = await fetch("http://localhost:3001/api/books", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include',
         body: formData,
       });
+
+      toast.dismiss(toastId);
 
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message.split("::")[1] || "Error al cargar el libro");
       }
       
+      toast.success("Libro cargado exitosamente", {
+        description: "Ya está disponible en la tienda",
+        duration: 3000,
+      });
+
       router.push("/");
     } catch (error) {
       console.error(error);
-      alert("Hubo un problema al crear el libro");
+      toast.dismiss(toastId);
+      toast.error("Error al cargar el libro. Intentá nuevamente", {
+        duration: 3000,
+      });
     }
   };
 

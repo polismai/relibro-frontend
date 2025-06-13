@@ -3,6 +3,7 @@ import { Quicksand } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { AuthProvider } from "../../context/AuthContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const quicksand = Quicksand({ subsets: ['latin'] });
 
@@ -20,12 +21,14 @@ export default function RootLayout({
     <html lang="es" className={quicksand.className}>
       <body className="min-h-screen flex flex-col">
         <AuthProvider>
+          <Toaster richColors position="top-right"/>
           <header className="w-full">
             <Navbar />
           </header>
           <main className="flex-grow">
             {children}
           </main>
+          
           {/* <Footer /> */}
         </AuthProvider>
       </body>
