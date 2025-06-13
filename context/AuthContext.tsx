@@ -22,35 +22,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('http://localhost:3001/api/auth/me', {
-          credentials: 'include',
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error('Error al obtener el usuario:', error);
-        setUser(null);
-      }
-    };
-
-    fetchUser();
-  }, []);
+ useEffect(() => {
+  if (!user) {
+    fetch('http://localhost:3001/api/auth/me', {
+      credentials: 'include',
+    })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.user) setUser(data.user);
+      })
+      .catch(() => {});
+  }
+}, [user]);
 
   const login = (userData: User) => {
     setUser(userData);
   };
 
-  const logout = () => {
-    setUser(null);
-    router.push('/');
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:3001/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (err) {
+      console.error('Error al cerrar sesión', err);
+    } finally {
+      setUser(null);
+      router.push('/');
+    }
   };
 
   return (
