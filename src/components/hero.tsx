@@ -57,7 +57,7 @@ const Hero = () => {
             Libros usados, historias nuevas. Comprá o vendé fácil desde un solo lugar.
           </p>
           <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-            <Button className="px-6 py-3 text-lg" onClick={() => router.push("/books")}>
+            <Button className="px-6 py-3 text-lg" onClick={() => router.push("/catalog")}>
               Explorar catálogo
             </Button>
             <Button variant="outline" className="px-6 py-3 text-lg" onClick={() => router.push("/sell")}>
