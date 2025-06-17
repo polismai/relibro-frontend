@@ -38,8 +38,6 @@ export function useGetBooks() {
     fetchBooks();
   }, []);
 
-  console.log("ESTO ES BOOKS", books);
-
   return { loading, books, error };
 }
 

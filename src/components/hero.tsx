@@ -42,9 +42,21 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "sonner";
 
 const Hero = () => {
+  const { user } = useAuth();
   const router = useRouter();
+
+  const handleSellClick = () => {
+    if (!user) {
+      toast.info("Necesitás iniciar sesión para vender un libro.");
+      router.push("/login?redirect=/add-book");
+    } else {
+      router.push("/add-book");
+    }
+  };
 
   return (
     <section className="bg-neutral-50 py-16 px-6 sm:px-10">
@@ -60,7 +72,7 @@ const Hero = () => {
             <Button className="px-6 py-3 text-lg" onClick={() => router.push("/catalog")}>
               Explorar catálogo
             </Button>
-            <Button variant="outline" className="px-6 py-3 text-lg" onClick={() => router.push("/sell")}>
+            <Button variant="outline" className="px-6 py-3 text-lg" onClick={handleSellClick}>
               Vender un libro
             </Button>
           </div>

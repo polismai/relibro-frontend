@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../../../../context/AuthContext";
 import { toast } from "sonner";
 
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,7 +52,7 @@ export default function LoginPage() {
         duration: 3000,
       });
 
-      router.push("/"); 
+      router.push(redirectTo); 
     } catch (err) {
       toast.dismiss(toastId);
 

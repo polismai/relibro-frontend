@@ -30,11 +30,9 @@
 
 import { Expand, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-
+import { useAddToCart } from "@/hooks/useAddToCart";
 import { formatPrice } from "@/lib/formatPrice";
 import { ProductType } from "@/types/product";
-
 import IconButton from "@/components/icon-button";
 
 type BookCardProps = {
@@ -43,8 +41,9 @@ type BookCardProps = {
 
 export const BookCard = ({ book }: BookCardProps) => {
   const router = useRouter();
+  const { handleAddToCart } = useAddToCart();
 
-  const mainImage = book.images[0]?.url || "/placeholder.jpg"; // imagen por defecto si no hay
+  const mainImage = book.images[0]?.url || "/placeholder.jpg"; 
 
   return (
     <div className="relative p-2 transition-all duration-100 rounded-lg hover:shadow-md">
@@ -57,7 +56,7 @@ export const BookCard = ({ book }: BookCardProps) => {
         </p>
       </div>
 
-      <div className="relative group cursor-pointer" onClick={() => router.push(`/product/${book.id}`)}>
+      <div className="relative group">
         <img
           src={mainImage}
           alt={`Imagen del libro ${book.title}`}
@@ -71,7 +70,7 @@ export const BookCard = ({ book }: BookCardProps) => {
               icon={<Expand size={20} className="text-gray-600" />}
             />
             <IconButton
-              onClick={() => console.log("Add to cart")}
+              onClick={() => handleAddToCart(book)}
               icon={<ShoppingCart size={20} className="text-gray-600" />}
             />
           </div>
