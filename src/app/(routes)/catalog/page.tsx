@@ -2,14 +2,14 @@
 
 import BookCard from "./components/book-card";
 import { ProductType } from "@/types/product"; 
-import SkeletonProduct from "../product/[productSlug]/components/skeleton-product";
 import { useGetBooks } from "@/api/getBooks";
+import SkeletonSchema from "@/components/skeletonSchema";
 
 export default function CatalogPage() {
   const { loading, books, error } = useGetBooks();
 
   if (loading) {
-    return <SkeletonProduct />;
+    return  <SkeletonSchema grid={3} />;
   }
 
   if (error) {

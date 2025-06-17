@@ -3,13 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
-const categories = [
-  { label: "ESCOLAR", value: "school" },
-  { label: "LITERARIO", value: "story" },
-];
+import { createBook } from "@/api/createBook";
+import { useGetCategories } from "@/api/getCategories";
 
 export default function AddBookPage() {
+  const { categories, loading, error } = useGetCategories();
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
@@ -37,33 +35,12 @@ export default function AddBookPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-
-    if (images) {
-      Array.from(images).forEach((image) => {
-        formData.append("images", image);
-      });
-    }
-
     const toastId = toast.loading("Cargando libro...");
 
     try {
-      const res = await fetch("http://localhost:3001/api/books", {
-        method: "POST",
-        credentials: 'include',
-        body: formData,
-      });
+      await createBook(form, images);
 
       toast.dismiss(toastId);
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message.split("::")[1] || "Error al cargar el libro");
-      }
-      
       toast.success("Libro cargado exitosamente", {
         description: "Ya está disponible en la tienda",
         duration: 3000,
@@ -136,7 +113,7 @@ export default function AddBookPage() {
           required
         >
           <option value="">Seleccionar categoría</option>
-          {categories.map((cat) => (
+          {categories?.map((cat) => (
             <option key={cat.value} value={cat.value}>{cat.label}</option>
           ))}
         </select>
