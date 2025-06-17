@@ -1,4 +1,3 @@
-// src/hooks/useAddToCart.ts
 'use client';
 
 import { useRouter } from 'next/navigation';

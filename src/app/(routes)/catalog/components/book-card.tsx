@@ -30,7 +30,7 @@
 
 import { Expand, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useAddToCart } from "@/hooks/useAddToCart";
+import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { formatPrice } from "@/lib/formatPrice";
 import { ProductType } from "@/types/product";
 import IconButton from "@/components/icon-button";

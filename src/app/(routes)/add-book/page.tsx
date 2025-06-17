@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createBook } from "@/api/createBook";
 import { useGetCategories } from "@/api/getCategories";
+import { useGetGenres } from "@/api/getGenres";
 
 export default function AddBookPage() {
-  const { categories, loading, error } = useGetCategories();
+  const { categories } = useGetCategories();
+  const { genres } = useGetGenres();
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
@@ -77,13 +79,17 @@ export default function AddBookPage() {
           className="w-full border border-gray-300 p-2 rounded"
         />
 
-        <input
+        <select
           name="genre"
-          placeholder="Género"
           value={form.genre}
           onChange={handleChange}
           className="w-full border border-gray-300 p-2 rounded"
-        />
+        >
+          <option value="">Seleccionar género</option>
+          {genres.map((g) => (
+            <option key={g.value} value={g.value}>{g.label}</option>
+          ))}
+        </select>
 
         <textarea
           name="description"
