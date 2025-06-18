@@ -4,6 +4,7 @@ import BookCard from "./components/book-card";
 import { useGetBooks } from "@/api/getBooks";
 import SkeletonSchema from "@/components/skeletonSchema";
 import { CATEGORY_LABELS } from "@/types/category";
+import { Separator } from "@/components/ui/separator";
 import { useParams } from "next/navigation";
 
 
@@ -19,14 +20,35 @@ export default function CatalogPage() {
   }
 
   return (
-    <div className="max-w-6xl px-6 py-12 mx-auto">
-      <h1 className="mb-8 text-3xl font-bold text-center">{CATEGORY_LABELS[category as string]}</h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {books && books.length > 0 ? (
-          books.map((book) => <BookCard key={book.id} book={book} />)
-        ) : (
+    // <div className="max-w-6xl px-6 py-12 mx-auto">
+    //   <h1 className="mb-8 text-3xl font-bold text-center">{CATEGORY_LABELS[category as string]}</h1>
+    //   <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    //     {books && books.length > 0 ? (
+    //       books.map((book) => <BookCard key={book.id} book={book} />)
+    //     ) : (
+    //       <p>No hay libros en esta categoría.</p>
+    //     )}
+    //   </div>
+    // </div>
+    <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
+      {!loading && books !== null && (
+        <h1 className="text-3xl font-medium">{CATEGORY_LABELS[category as string]}</h1>
+      )}
+      <Separator />
+
+      <div className="sm:flex sm:justify-between">
+        {/* <FiltersControlsCategory setFilterOrigin={setFilterOrigin} /> */}
+
+        <div className="grid gap-5 mt-8 sm:grid-cols-2 md:grid-cols-3 md:gap-10">
+          {loading && (
+            <SkeletonSchema grid={3} />
+          )}
+          {!loading && books && books.length > 0 ? (
+            books.map((book) => <BookCard key={book.id} book={book} />)
+          ) : (
           <p>No hay libros en esta categoría.</p>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
