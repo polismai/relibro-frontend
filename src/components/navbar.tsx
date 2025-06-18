@@ -2,7 +2,7 @@
 
 import { ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthProvider";
 
 const Navbar = () => {
   const router = useRouter();

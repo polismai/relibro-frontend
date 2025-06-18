@@ -2,14 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { formatPrice } from "@/lib/formatPrice";
-import { ProductType } from "@/types/product";
+import { CATEGORY_LABELS } from "@/types/category";
+import { BookType } from "@/types/product";
 import { Heart } from "lucide-react";
 
 // import { useCart } from "../../../../../../hooks/use-cart";
 // import { useLovedProducts } from "../../../../../../hooks/use-loved-products";
 
 export type InfoProductProps = {
-  product: ProductType
+  product: BookType
 }
 
 const InfoProduct = (props: InfoProductProps) => {
@@ -25,7 +26,7 @@ const { handleAddToCart } = useAddToCart();
         <h1 className="text-2xl">{product.title}</h1>
         <div className="flex items-center justify-between gap-3">
           <p className="px-2 py-1 text-xs text-white bg-black rounded-full w-fit">
-            {product.category}
+            {CATEGORY_LABELS[product.category]}
           </p>
         </div>
       </div>

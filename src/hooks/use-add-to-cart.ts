@@ -2,14 +2,14 @@
 
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useAuth } from '../../context/AuthContext';
-import { ProductType } from '@/types/product';
+import { useAuth } from '../../context/AuthProvider';
+import { BookType } from '@/types/product';
 
 export function useAddToCart() {
   const { user } = useAuth();
   const router = useRouter();
 
-  const handleAddToCart = (book: ProductType) => {
+  const handleAddToCart = (book: BookType) => {
     if (!user) {
       toast.info("Tenés que iniciar sesión para agregar libros al carrito.");
       router.push(`/login?redirect=/product/${book.id}`);

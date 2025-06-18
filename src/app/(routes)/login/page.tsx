@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "../../../../context/AuthContext";
+import { useAuth } from "../../../../context/AuthProvider";
 import { toast } from "sonner";
 
 export default function LoginPage() {

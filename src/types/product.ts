@@ -1,9 +1,9 @@
-export type ProductImageType = {
+export type BookImageType = {
   id: string;
   url: string;
 };
 
-export type ProductUserType = {
+export type BookUserType = {
   id: string;
   firstName: string;
   lastName: string;
@@ -11,7 +11,7 @@ export type ProductUserType = {
   role: string;
 };
 
-export type ProductType = {
+export type BookType = {
   id: string;
   title: string;
   author?: string;
@@ -20,6 +20,6 @@ export type ProductType = {
   price: number;
   isAvailable: boolean;
   category: string;
-  images: ProductImageType[];
-  user: ProductUserType;
+  images: BookImageType[];
+  user: BookUserType;
 };

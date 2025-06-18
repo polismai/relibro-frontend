@@ -1,9 +1,9 @@
-import { ProductType } from "@/types/product";
+import { BookType } from "@/types/product";
 import { useEffect, useState } from "react";
 
 export function useGetProductBySlug(slug: string | string[]) {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${slug}`;
-  const [result, setResult] = useState<ProductType | null>(null);
+  const [result, setResult] = useState<BookType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 

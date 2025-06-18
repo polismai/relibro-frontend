@@ -1,33 +1,34 @@
-import { ProductType } from "@/types/product";
+import { BookType } from "@/types/product";
 import { useEffect, useState } from "react";
 
-export function useGetBooks() {
-  const [books, setBooks] = useState<ProductType[] | null>(null);
+export function useGetBooks(category?: string | string[]) {
+  const [books, setBooks] = useState<BookType[] | null>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     const fetchBooks = async () => {
-      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books`;
 
       try {
-        const res = await fetch(url, {
-          method: "GET",
-          credentials: "include",
-        });
+        let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books`;
+        if (category) {
+          url += `?category=${category}`;
+        }
+
+        const res = await fetch(url);
 
         if (!res.ok) {
           const errorData = await res.json();
-          throw new Error(errorData.message.split("::")[1] || "Error al traer los libros");
+          throw new Error(errorData.message.split("::")[1] || "Error al obtener los libros");
         }
 
-        const data: ProductType[] = await res.json();
+        const data: BookType[] = await res.json();
         setBooks(data);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
         } else {
-          setError("Unexpected error");
+          setError("Error inesperado");
         }
         setBooks(null);
       } finally {
@@ -36,7 +37,7 @@ export function useGetBooks() {
     };
       
     fetchBooks();
-  }, []);
+  }, [category]);
 
   return { loading, books, error };
 }

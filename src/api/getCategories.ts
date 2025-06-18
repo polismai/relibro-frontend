@@ -1,12 +1,13 @@
+import { CategoryType } from "@/types/category";
 import { useEffect, useState } from "react";
 
-export type CategoryOption = {
-  label: string;
-  value: string;
-};
-
 export function useGetCategories() {
-  const [categories, setCategories] = useState<CategoryOption[] | null>(null);
+  const imagesByCategory = {
+    school: "/images/school-books.jpg",
+    story: "/images/story-books.jpg",
+  };
+
+  const [categories, setCategories] = useState<(CategoryType & { imageUrl: string})[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -19,8 +20,14 @@ export function useGetCategories() {
 
         if (!res.ok) throw new Error("Error al cargar las categorías");
 
-        const data: CategoryOption[] = await res.json();
-        setCategories(data);
+        const data: CategoryType[] = await res.json();
+
+        const categoriesWithImages = data.map((cat) => ({
+          ...cat,
+          imageUrl: imagesByCategory[cat.value as keyof typeof imagesByCategory] || "/images/default.jpg",
+        }));
+
+        setCategories(categoriesWithImages);
       } catch (err) {
         console.error("Error fetching categories", err);
         setError("Error al obtener las categorías");

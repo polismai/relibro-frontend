@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
-import { AuthProvider } from "../../context/AuthContext";
+import { AuthProvider } from "../../context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 const quicksand = Quicksand({ subsets: ['latin'] });
