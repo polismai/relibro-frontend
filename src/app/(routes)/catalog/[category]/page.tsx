@@ -7,53 +7,27 @@ import { CATEGORY_LABELS } from "@/types/category";
 import { Separator } from "@/components/ui/separator";
 import { useParams } from "next/navigation";
 import CatalogFilters from "./components/catalog-filters";
-import { BookType } from "@/types/product";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGetGenres } from "@/api/getGenres";
 
 export default function CatalogPage() {
   const { category } = useParams();
   const { genres } = useGetGenres();
-  const { loading, books, error } = useGetBooks(category);
-  const [filteredBooks, setFilteredBooks] = useState<BookType[]>([]);
 
-  useEffect(() => {
-    setFilteredBooks(books || []);
-  }, [books]);
+  const [filters, setFilters] = useState({
+    category: category as string,
+    genre: "",
+    minPrice: undefined,
+    maxPrice: undefined,
+    sortBy: "",
+  });
 
-  const handleFilterChange = ({
-    genre,
-    minPrice,
-    maxPrice,
-    sort,
-  }: {
-    genre?: string;
-    minPrice?: number;
-    maxPrice?: number;
-    sort?: string;
-  }) => {
-    let updated = [...(books || [])];
+  const { books, loading, error } = useGetBooks(filters);
 
-    if (genre) {
-      updated = updated.filter((book) => book.genre === genre);
-    }
-
-    if (minPrice !== undefined) {
-      updated = updated.filter((book) => book.price >= minPrice);
-    }
-
-    if (maxPrice !== undefined) {
-      updated = updated.filter((book) => book.price <= maxPrice);
-    }
-
-    if (sort === "price-asc") {
-      updated.sort((a, b) => a.price - b.price);
-    } else if (sort === "price-desc") {
-      updated.sort((a, b) => b.price - a.price);
-    }
-
-    setFilteredBooks(updated);
+  const handleFilterChange = (newFilters: Partial<typeof filters>) => {
+    setFilters((prev) => ({ ...prev, ...newFilters }));
   };
+
 
   return (
     // <div className="max-w-6xl px-6 py-12 mx-auto">
@@ -83,8 +57,8 @@ export default function CatalogPage() {
           {loading && (
             <SkeletonSchema grid={3} />
           )}
-          {!loading && filteredBooks && filteredBooks.length > 0 ? (
-            filteredBooks.map((book) => <BookCard key={book.id} book={book} />)
+          {!loading && books && books.length > 0 ? (
+            books.map((book) => <BookCard key={book.id} book={book} />)
           ) : (
           <p className="col-span-full mt-16 text-gray-500 text-lg">No hay libros disponibles en esta categoría.</p>
           )}

@@ -11,27 +11,43 @@ type FiltersType = {
 };
 
 type FilterProps = {
-  genres: GenreOption[]; 
+  genres: GenreOption[];
   onFilterChange: (filters: FiltersType) => void;
 };
 
 const CatalogFilters = ({ genres, onFilterChange }: FilterProps) => {
   const [filters, setFilters] = useState<FiltersType>({});
 
- const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
-    const updated = { ...filters, [name]: value };
-    setFilters(updated);
-    onFilterChange(updated);
+
+    // Convert empty string to undefined
+    const parsedValue =
+      value === ""
+        ? undefined
+        : name === "priceMin" || name === "priceMax"
+        ? parseInt(value)
+        : value;
+
+    const updatedFilters = { ...filters, [name]: parsedValue };
+    setFilters(updatedFilters);
+    onFilterChange(updatedFilters);
   };
 
   return (
     <div className="flex flex-col gap-4 w-full sm:max-w-xs">
       {/* Género */}
-      <select name="genre" value={filters.genre || ""} onChange={handleChange} className="border rounded p-2">
+      <select
+        name="genre"
+        value={filters.genre || ""}
+        onChange={handleChange}
+        className="border rounded p-2"
+      >
         <option value="">Todos los géneros</option>
         {genres.map((genre) => (
-          <option key={genre.value} value={genre.value}>{genre.label}</option>
+          <option key={genre.value} value={genre.value}>
+            {genre.label}
+          </option>
         ))}
       </select>
 
@@ -40,7 +56,7 @@ const CatalogFilters = ({ genres, onFilterChange }: FilterProps) => {
         type="number"
         name="priceMin"
         placeholder="Precio mínimo"
-        value={filters.priceMin || ""}
+        value={filters.priceMin ?? ""}
         onChange={handleChange}
         className="border rounded p-2"
       />
@@ -50,13 +66,18 @@ const CatalogFilters = ({ genres, onFilterChange }: FilterProps) => {
         type="number"
         name="priceMax"
         placeholder="Precio máximo"
-        value={filters.priceMax || ""}
+        value={filters.priceMax ?? ""}
         onChange={handleChange}
         className="border rounded p-2"
       />
 
       {/* Ordenar por */}
-      <select name="sortBy" value={filters.sortBy || ""} onChange={handleChange} className="border rounded p-2">
+      <select
+        name="sortBy"
+        value={filters.sortBy || ""}
+        onChange={handleChange}
+        className="border rounded p-2"
+      >
         <option value="">Ordenar por</option>
         <option value="price_asc">Precio: menor a mayor</option>
         <option value="price_desc">Precio: mayor a menor</option>
