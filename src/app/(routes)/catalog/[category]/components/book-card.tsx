@@ -47,21 +47,18 @@ export const BookCard = ({ book }: BookCardProps) => {
   const mainImage = book.images[0]?.url || "/placeholder.jpg"; 
 
   return (
-    <div className="relative p-2 transition-all duration-100 rounded-lg hover:shadow-md">
+    <div className="relative transition-all duration-100 rounded-lg hover:shadow-md">
       <div className="absolute flex items-center justify-between gap-3 px-2 z-[1] top-4">
         <p className="px-2 py-1 text-xs text-white bg-black rounded-full dark:bg-white dark:text-black w-fit">
           {book.genre}
         </p>
-        {/* <p className="px-2 py-1 text-xs text-white bg-yellow-900 rounded-full w-fit">
-          {CATEGORY_LABELS[book.category]}
-        </p> */}
       </div>
 
       <div className="relative group">
         <img
           src={mainImage}
           alt={`Imagen del libro ${book.title}`}
-          className="w-full rounded-xl object-cover"
+          className="w-full rounded-t-xl object-cover"
         />
 
         <div className="absolute w-full px-6 transition duration-200 opacity-0 group-hover:opacity-100 bottom-5">

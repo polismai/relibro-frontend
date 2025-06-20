@@ -1,9 +1,5 @@
+import { GenreOption } from '@/types/genre';
 import { useEffect, useState } from 'react';
-
-type GenreOption = {
-  label: string;
-  value: string;
-};
 
 export const useGetGenres = () => {
   const [genres, setGenres] = useState<GenreOption[]>([]);
