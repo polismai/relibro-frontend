@@ -15,6 +15,8 @@ export default function AddBookPage() {
     title: "",
     author: "",
     genre: "",
+    subject: "",
+    schoolYear: "",
     description: "",
     price: "",
     category: "",
@@ -62,6 +64,19 @@ export default function AddBookPage() {
     <div className="max-w-3xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-6">Agregar nuevo libro</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
+        <select
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          className="w-full border border-gray-300 p-2 rounded"
+          required
+        >
+          <option value="">Seleccionar categoría</option>
+          {categories?.map((cat) => (
+            <option key={cat.value} value={cat.value}>{cat.label}</option>
+          ))}
+        </select>
+        
         <input
           name="title"
           placeholder="Título"
@@ -71,26 +86,52 @@ export default function AddBookPage() {
           required
         />
 
-        <input
-          name="author"
-          placeholder="Autor"
-          value={form.author}
-          onChange={handleChange}
-          className="w-full border border-gray-300 p-2 rounded"
-        />
+        {form.category === "school" && (
+          <>
+            <input
+              name="subject"
+              placeholder="Materia"
+              value={form.subject}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded"
+              required
+             />
 
-        <select
-          name="genre"
-          value={form.genre}
-          onChange={handleChange}
-          className="w-full border border-gray-300 p-2 rounded"
-        >
-          <option value="">Seleccionar género</option>
-          {genres.map((g) => (
-            <option key={g.value} value={g.value}>{g.label}</option>
-          ))}
-        </select>
+            <input
+              name="schoolYear"
+              placeholder="Año escolar"
+              value={form.schoolYear}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded"
+              required
+            />
+          </>
+        )}
 
+        {form.category === "story" && (
+          <>
+            <input
+              name="author"
+              placeholder="Autor"
+              value={form.author}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded"
+            />
+
+            <select
+              name="genre"
+              value={form.genre}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded"
+            >
+              <option value="">Seleccionar género</option>
+                {genres.map((g) => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
+            </select>
+          </>
+        )}
+        
         <textarea
           name="description"
           placeholder="Descripción"
@@ -110,19 +151,6 @@ export default function AddBookPage() {
           className="w-full border border-gray-300 p-2 rounded"
           required
         />
-
-        <select
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          className="w-full border border-gray-300 p-2 rounded"
-          required
-        >
-          <option value="">Seleccionar categoría</option>
-          {categories?.map((cat) => (
-            <option key={cat.value} value={cat.value}>{cat.label}</option>
-          ))}
-        </select>
 
         <input
           type="file"
