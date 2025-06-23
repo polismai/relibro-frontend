@@ -9,12 +9,13 @@ import { useParams } from "next/navigation";
 import CatalogFilters from "./components/catalog-filters";
 import { useState } from "react";
 import { useGetGenres } from "@/api/getGenres";
+import { FilterOptions } from "@/types/filters";
 
 export default function CatalogPage() {
   const { category } = useParams();
   const { genres } = useGetGenres();
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FilterOptions>({
     category: category as string,
     genre: "",
     minPrice: undefined,
@@ -24,7 +25,7 @@ export default function CatalogPage() {
 
   const { books, loading, error } = useGetBooks(filters);
 
-  const handleFilterChange = (newFilters: Partial<typeof filters>) => {
+  const handleFilterChange = (newFilters: Partial<FilterOptions>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 

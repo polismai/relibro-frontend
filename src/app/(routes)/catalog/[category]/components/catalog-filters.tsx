@@ -8,7 +8,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 type FilterProps = {
   filters: FilterOptions;
   genres: GenreOption[];
-  onFilterChange: (filters: FilterOptions) => void;
+  onFilterChange: (filters: Partial<FilterOptions>) => void;
 };
 
 const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
