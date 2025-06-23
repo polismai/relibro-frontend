@@ -4,6 +4,10 @@ import { useState } from "react";
 import { FilterOptions } from "@/types/filters";
 import { GenreOption } from "@/types/genre";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 type FilterProps = {
   filters: FilterOptions;
@@ -14,8 +18,7 @@ type FilterProps = {
 const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (name: string, value: string) => {
 
     const parsedValue =
       value === ""
@@ -32,87 +35,88 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
     <>
       {/* Botón solo visible en mobile */}
       <div className="sm:hidden mb-4">
-        <button
+        <Button
           onClick={() => setShowMobileFilters(!showMobileFilters)}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded hover:bg-gray-700"
+          variant="default"
+          className="w-full flex justify-between"
         >
           {showMobileFilters ? "Ocultar filtros" : "Mostrar filtros"}
           {showMobileFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
+        </Button>
       </div>
 
       {/* Contenedor de filtros */}
       <div
         className={`
-          flex flex-col gap-4 w-full sm:max-w-xs bg-white p-4 rounded shadow-sm
+          flex flex-col gap-4 w-full sm:max-w-xs p-4 rounded-md border
           ${showMobileFilters ? "block" : "hidden"} sm:block
         `}
       >
         <h2 className="text-lg font-semibold">Filtrar por</h2>
 
         {/* Género */}
-        <div className="flex flex-col">
-          <label htmlFor="genre" className="text-sm font-medium mb-1">Género</label>
-          <select
-            id="genre"
-            name="genre"
+        <div className="flex flex-col gap-1">
+          <Label>Género</Label>
+          <Select
             value={filters.genre || ""}
-            onChange={handleChange}
-            className="border rounded p-2 text-sm"
+            onValueChange={(value) => handleChange("genre", value)}
           >
-            <option value="">Todos los géneros</option>
-            {genres.map((genre) => (
-              <option key={genre.value} value={genre.value}>
-                {genre.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="Todos los géneros" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Todos los géneros</SelectItem>
+              {genres.map((genre) => (
+                <SelectItem key={genre.value} value={genre.value}>
+                  {genre.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Precio mínimo */}
-        <div className="flex flex-col">
-          <label htmlFor="minPrice" className="text-sm font-medium mb-1">Precio mínimo</label>
-          <input
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="minPrice">Precio mínimo</Label>
+          <Input
             type="number"
             id="minPrice"
-            name="minPrice"
             placeholder="Ej: 100"
             value={filters.minPrice ?? ""}
-            onChange={handleChange}
-            className="border rounded p-2 text-sm"
+            onChange={(e) => handleChange("minPrice", e.target.value)}
           />
         </div>
 
         {/* Precio máximo */}
-        <div className="flex flex-col">
-          <label htmlFor="maxPrice" className="text-sm font-medium mb-1">Precio máximo</label>
-          <input
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="maxPrice">Precio máximo</Label>
+          <Input
             type="number"
             id="maxPrice"
-            name="maxPrice"
             placeholder="Ej: 1000"
             value={filters.maxPrice ?? ""}
-            onChange={handleChange}
-            className="border rounded p-2 text-sm"
+            onChange={(e) => handleChange("maxPrice", e.target.value)}
           />
         </div>
 
         {/* Ordenar por */}
         <div className="flex flex-col">
-          <label htmlFor="sortBy" className="text-sm font-medium mb-1">Ordenar por</label>
-          <select
-            id="sortBy"
-            name="sortBy"
+          <Label>Ordenar por</Label>
+          <Select
             value={filters.sortBy || ""}
-            onChange={handleChange}
-            className="border rounded p-2 text-sm"
+            onValueChange={(value) => handleChange("sortBy", value)}
           >
-            <option value="">Sin orden</option>
-            <option value="price_asc">Precio: menor a mayor</option>
-            <option value="price_desc">Precio: mayor a menor</option>
-            <option value="title_asc">Título A-Z</option>
-            <option value="title_desc">Título Z-A</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="Sin orden" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Sin orden</SelectItem>
+              <SelectItem value="price_asc">Precio: menor a mayor</SelectItem>
+              <SelectItem value="price_desc">Precio: mayor a menor</SelectItem>
+              <SelectItem value="title_asc">Título A-Z</SelectItem>
+              <SelectItem value="title_desc">Título Z-A</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </>
