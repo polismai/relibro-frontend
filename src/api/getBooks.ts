@@ -1,13 +1,6 @@
+import { FilterOptions } from "@/types/filters";
 import { BookType } from "@/types/product";
 import { useEffect, useState } from "react";
-
-type FilterOptions = {
-  category: string;
-  genre?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  sortBy?: string;
-};
 
 export function useGetBooks(filters: FilterOptions) {
   const [books, setBooks] = useState<BookType[] | null>(null);
@@ -48,7 +41,6 @@ export function useGetBooks(filters: FilterOptions) {
     fetchBooks();
   }, [filters]);
 
-  console.log('los libros', books)
   return { loading, books, error };
 }
 

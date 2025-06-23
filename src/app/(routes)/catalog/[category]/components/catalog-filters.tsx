@@ -11,13 +11,13 @@ type FiltersType = {
 };
 
 type FilterProps = {
+  filters: FiltersType;
   genres: GenreOption[];
   onFilterChange: (filters: FiltersType) => void;
 };
 
-const CatalogFilters = ({ genres, onFilterChange }: FilterProps) => {
-  const [filters, setFilters] = useState<FiltersType>({});
-
+const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
+    
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -30,7 +30,6 @@ const CatalogFilters = ({ genres, onFilterChange }: FilterProps) => {
         : value;
 
     const updatedFilters = { ...filters, [name]: parsedValue };
-    setFilters(updatedFilters);
     onFilterChange(updatedFilters);
   };
 

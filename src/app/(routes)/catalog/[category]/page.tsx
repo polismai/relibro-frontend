@@ -51,7 +51,7 @@ export default function CatalogPage() {
       <Separator />
 
       <div className="sm:flex sm:justify-between mt-8">
-        <CatalogFilters genres={genres} onFilterChange={handleFilterChange} />
+        <CatalogFilters filters={filters} genres={genres} onFilterChange={handleFilterChange} />
 
         <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-10 ml-6">
           {loading && (
