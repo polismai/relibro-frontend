@@ -18,27 +18,20 @@ type FilterProps = {
 const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  const handleChange = (name: string, value: string) => {
+  const handleChange = (name: keyof FilterOptions, value: string | number | undefined) => {
 
-    const parsedValue =
-      value === ""
-        ? undefined
-        : name === "minPrice" || name === "maxPrice"
-        ? parseInt(value)
-        : value;
-
-    const updatedFilters = { ...filters, [name]: parsedValue };
+    const updatedFilters = { ...filters, [name]: value };
     onFilterChange(updatedFilters);
   };
 
   return (
     <>
       {/* Botón solo visible en mobile */}
-      <div className="sm:hidden mb-4">
+      <div className="sm:hidden mb-4 px-4">
         <Button
           onClick={() => setShowMobileFilters(!showMobileFilters)}
           variant="default"
-          className="w-full flex justify-between"
+          className="w-full flex justify-between "
         >
           {showMobileFilters ? "Ocultar filtros" : "Mostrar filtros"}
           {showMobileFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -48,24 +41,26 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
       {/* Contenedor de filtros */}
       <div
         className={`
-          flex flex-col gap-4 w-full sm:max-w-xs p-4 rounded-md border
+          flex flex-col space-y-4 w-full sm:max-w-xs p-4 rounded-md border
           ${showMobileFilters ? "block" : "hidden"} sm:block
         `}
       >
         <h2 className="text-lg font-semibold">Filtrar por</h2>
 
         {/* Género */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <Label>Género</Label>
           <Select
-            value={filters.genre || ""}
-            onValueChange={(value) => handleChange("genre", value)}
+            value={filters.genre || "none"}
+            onValueChange={(value) => 
+              handleChange("genre", value === "none" ? undefined : value)
+            }
           >
             <SelectTrigger>
               <SelectValue placeholder="Todos los géneros" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Todos los géneros</SelectItem>
+              <SelectItem value="none">Todos los géneros</SelectItem>
               {genres.map((genre) => (
                 <SelectItem key={genre.value} value={genre.value}>
                   {genre.label}
@@ -76,41 +71,47 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
         </div>
 
         {/* Precio mínimo */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="minPrice">Precio mínimo</Label>
           <Input
             type="number"
             id="minPrice"
             placeholder="Ej: 100"
             value={filters.minPrice ?? ""}
-            onChange={(e) => handleChange("minPrice", e.target.value)}
+            onChange={(e) => 
+              handleChange("minPrice", e.target.value === "" ? undefined : parseInt(e.target.value))
+            }
           />
         </div>
 
         {/* Precio máximo */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="maxPrice">Precio máximo</Label>
           <Input
             type="number"
             id="maxPrice"
             placeholder="Ej: 1000"
             value={filters.maxPrice ?? ""}
-            onChange={(e) => handleChange("maxPrice", e.target.value)}
+            onChange={(e) => 
+              handleChange("maxPrice", e.target.value === "" ? undefined : parseInt(e.target.value))
+            }
           />
         </div>
 
         {/* Ordenar por */}
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           <Label>Ordenar por</Label>
           <Select
-            value={filters.sortBy || ""}
-            onValueChange={(value) => handleChange("sortBy", value)}
+            value={filters.sortBy || "none"}
+            onValueChange={(value) => 
+              handleChange("sortBy", value === "none" ? undefined : value)
+            }
           >
             <SelectTrigger>
               <SelectValue placeholder="Sin orden" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Sin orden</SelectItem>
+              <SelectItem value="none">-</SelectItem>
               <SelectItem value="price_asc">Precio: menor a mayor</SelectItem>
               <SelectItem value="price_desc">Precio: mayor a menor</SelectItem>
               <SelectItem value="title_asc">Título A-Z</SelectItem>
