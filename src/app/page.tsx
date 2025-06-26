@@ -1,15 +1,15 @@
-import ChooseCategory from "@/components/choose-category";
+import CarouselTextBanner from "@/components/carousel-text-banner";
 import Hero from "@/components/hero";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <main>
+        <section>
+          <CarouselTextBanner />
+        </section>
         <section className="w-full mx-auto">
           <Hero />
-        </section>
-        <section>
-          <ChooseCategory />
         </section>
       </main>
     </div>

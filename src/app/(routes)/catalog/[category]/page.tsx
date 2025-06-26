@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useGetGenres } from "@/api/getGenres";
 import { FilterOptions } from "@/types/filters";
 
-export default function CatalogPage() {
+export default function CatalogPageByCategory() {
   const { category } = useParams();
   const { genres } = useGetGenres();
 
