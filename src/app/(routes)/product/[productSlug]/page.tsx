@@ -18,8 +18,8 @@ export default function Page() {
 
   return (
     <div className="max-w-6xl py-4 mx-auto sm:py-32 sm:px-24">
-      <div className="grid sm:grid-cols-3 gap-8">
-        {/* Sección de imágenes (ocupa 2 columnas) */}
+      <div className="sm:grid sm:grid-cols-3">
+        {/* Sección de imágenes */}
         <div className="sm:col-span-2">
           <CarouselProduct images={result.images} />
         </div>

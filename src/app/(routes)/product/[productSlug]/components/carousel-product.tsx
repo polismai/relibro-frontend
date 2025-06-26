@@ -10,6 +10,7 @@ import {
 } from "swiper/react";
 import { Thumbs, Navigation, Pagination } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper/types";
+import { cn } from "@/lib/utils";
 
 interface CarouselProductProps {
   images: BookImageType[];
@@ -17,41 +18,50 @@ interface CarouselProductProps {
 
 const CarouselProduct = ({ images }: CarouselProductProps) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="grid sm:grid-cols-3">
-      {/* Thumbnails verticales */}
-      <div className="hidden sm:block w-24">
+    <div className="sm:grid sm:grid-cols-2">
+      {/* Miniaturas (solo en desktop) */}
+      <div className="hidden sm:block w-40">
         <Swiper
           onSwiper={setThumbsSwiper}
           direction="vertical"
-          spaceBetween={10}
+          spaceBetween={30}
           slidesPerView={4}
           watchSlidesProgress
           modules={[Thumbs]}
           className="h-[500px]"
         >
-          {images.map((img) => (
+          {images.map((img, index) => (
             <SwiperSlide key={img.id}>
-              <img
-                src={img.url}
-                alt="thumbnail"
-                className="rounded object-cover w-full h-24 cursor-pointer"
-              />
+              <div className="w-full h-32 flex items-center justify-center overflow-hidden bg-white rounded cursor-pointer">
+                <img
+                  src={img.url}
+                  alt="thumbnail"
+                  className={cn(
+                    "max-h-full max-w-full object-contain",
+                    activeIndex === index
+                      ? ""
+                      : "opacity-50 hover:opacity-100 transition"
+                  )}
+                />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      {/* Carrusel principal */}
-      <div className="sm:col-span-2">
+      {/* Carrusel principal (siempre visible) */}
+      <div className="w-full">
         <Swiper
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
           spaceBetween={10}
           navigation
           pagination={{ clickable: true }}
           thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
           modules={[Navigation, Thumbs, Pagination]}
-          className="h-[500px]"
+          className="w-full h-[400px] sm:h-[500px]"
         >
           {images.map((img) => (
             <SwiperSlide key={img.id}>
