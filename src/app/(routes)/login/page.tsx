@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../../../../context/AuthProvider";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -100,6 +101,13 @@ export default function LoginPage() {
           {loading ? 'Ingresando...' : 'Ingresar'}
         </button>
       </form>
+
+      <div className="text-center text-sm mt-4">
+        ¿Todavía no tenés cuenta?{" "}
+        <Link href="/register" className="text-pink-600 font-medium hover:underline">
+          Registrate
+        </Link>
+      </div>
     </div>
   );
 }
