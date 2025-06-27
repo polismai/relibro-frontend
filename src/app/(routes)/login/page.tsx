@@ -1,20 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "../../../../context/AuthProvider";
-import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
+import { useLogin } from "@/api/login";
 import Link from "next/link";
 
 export default function LoginPage() {
-  const { login } = useAuth();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/";
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const loginHandler = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,47 +22,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    const toastId = toast.loading("Iniciando sesión...");
-
-    try {
-      const res = await fetch("http://localhost:3001/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-        credentials: "include",
-      });
-
-      toast.dismiss(toastId);
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message.split("::")[1] || 'Credenciales incorrectas');
-      }
-
-      const data = await res.json();
-      login(data.user);
-
-      toast.success("Sesión iniciada con éxito", {
-        description: `Bienvenida, ${data.user.firstName}`,
-        duration: 3000,
-      });
-
-      router.push(redirectTo); 
-    } catch (err) {
-      toast.dismiss(toastId);
-
-      const error = err as Error;
-      console.error(error);
-
-      setError(error.message || "Error desconocido");
-    } finally {
-      setLoading(false);
-    }
+    await loginHandler(form, redirectTo, setError, setLoading);
   };
 
   return (
