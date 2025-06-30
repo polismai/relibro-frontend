@@ -4,10 +4,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useAuth } from '../../context/AuthProvider';
 import { BookType } from '@/types/product';
+import { useCart } from './use-cart';
 
 export function useAddToCart() {
   const { user } = useAuth();
   const router = useRouter();
+  const addItem = useCart((state) => state.addItem);
 
   const handleAddToCart = (book: BookType) => {
     if (!user) {
@@ -16,11 +18,11 @@ export function useAddToCart() {
       return;
     }
 
-    // 👉 Lógica real para agregar al carrito:
-    // Podés usar context, redux o un endpoint
-    console.log("Agregar al carrito:", book);
+    addItem(book);
+    
     toast.success("Libro agregado al carrito");
   };
 
   return { handleAddToCart };
 }
+
