@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 
-
 const dataFooter = [
   {
     id: 1,
@@ -10,17 +9,12 @@ const dataFooter = [
   },
   {
     id: 2,
-    name: "Productos",
-    link: "#"
+    name: "Catálogo",
+    link: "/catalog"
   },
   {
     id: 3,
     name: "Mi cuenta",
-    link: "#"
-  },
-  {
-    id: 4,
-    name: "Política de privacidad",
     link: "#"
   },
 ]
@@ -28,7 +22,7 @@ const dataFooter = [
 export const Footer = () => {
   return (
     <footer className="mt-4">
-      <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+      <div className="max-w-screen-xl mx-auto p-4 md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <p>Re
             <span className="font-bold">Libro</span>

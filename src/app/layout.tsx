@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import { AuthProvider } from "../../context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
+import SearchInput from "@/components/searchInput";
 
 const quicksand = Quicksand({ subsets: ['latin'] });
 
@@ -25,13 +26,12 @@ export default function RootLayout({
           <header className="w-full">
             <Navbar />
           </header>
+          <SearchInput />
           <main className="flex-grow">
             {children}
           </main>
           <Toaster richColors/>
-          <main>
-            <Footer />
-          </main>
+          <Footer />
         </AuthProvider>
       </body>
     </html>
