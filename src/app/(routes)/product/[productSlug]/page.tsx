@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProductBySlug } from "@/api/getProductBySlug";
+import { useGetBookById } from "@/api/getBookById";
 import { useParams } from "next/navigation";
 import SkeletonProduct from "./components/skeleton-product";
 import CarouselProduct from "./components/carousel-product";
@@ -10,7 +10,7 @@ export default function Page() {
   const params = useParams();
   const { productSlug } = params;
 
-  const { result } = useGetProductBySlug(productSlug);
+  const { result } = useGetBookById(productSlug);
 
   if (result === null) {
     return <SkeletonProduct />

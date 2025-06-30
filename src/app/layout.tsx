@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { AuthProvider } from "../../context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/footer";
 
 const quicksand = Quicksand({ subsets: ['latin'] });
 
@@ -21,15 +22,16 @@ export default function RootLayout({
     <html lang="es" className={quicksand.className}>
       <body className="min-h-screen flex flex-col">
         <AuthProvider>
-          <Toaster richColors position="top-right"/>
           <header className="w-full">
             <Navbar />
           </header>
           <main className="flex-grow">
             {children}
           </main>
-          
-          {/* <Footer /> */}
+          <Toaster richColors/>
+          <main>
+            <Footer />
+          </main>
         </AuthProvider>
       </body>
     </html>
