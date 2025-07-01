@@ -26,7 +26,6 @@ export default function RootLayout({
           <header className="w-full">
             <Navbar />
           </header>
-          <SearchInput />
           <main className="flex-grow">
             {children}
           </main>

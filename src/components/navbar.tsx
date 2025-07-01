@@ -1,12 +1,14 @@
 "use client";
 
-import { ShoppingCart, User } from "lucide-react";
+import { BaggageClaim, ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthProvider";
+import { useCart } from "@/hooks/use-cart";
 
 const Navbar = () => {
   const router = useRouter();
   const { user, logout } = useAuth();
+  const cart = useCart();
 
   return (
     <div className="bg-stone-300 w-full">
@@ -30,13 +32,24 @@ const Navbar = () => {
             </span>
           )}
 
-          <ShoppingCart
+          {cart.items.length === 0 ? 
+           <ShoppingCart
             strokeWidth="1"
             className="cursor-pointer hover:text-white transition-colors"
             onClick={() => router.push("/cart")}
             aria-label="Ir al carrito"
           />
-
+          : (
+            <div className="flex gap-1" onClick={() => router.push("/cart")}>
+              <BaggageClaim 
+                strokeWidth="1"
+                className="cursor-pointer hover:text-white transition-colors"
+                aria-label="Ir al carrito"
+              />
+              <span>{cart.items.length}</span>
+            </div>
+          )}
+         
           {user ? (
           <button className="text-sm hover:underline" onClick={logout}>
             Cerrar sesión

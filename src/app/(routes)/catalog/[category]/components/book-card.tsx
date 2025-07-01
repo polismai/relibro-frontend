@@ -1,11 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-// import { formatPrice } from "@/lib/formatPrice";
-// import { ProductType } from "@/types/product";
-// import Link from "next/link";
-
-// interface BookCardProps {
-//   book: ProductType;
-// }
 
 // const BookCard = ({ book }: BookCardProps) => {
 //   const mainImage = book.images[0]?.url;

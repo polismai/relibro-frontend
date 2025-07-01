@@ -3,6 +3,7 @@ import { useCart } from "../../../../hooks/use-cart";
 import { formatPrice } from "@/lib/formatPrice";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import BookImage from "@/components/book-image";
 
 interface CartItemProps {
   product: BookType;
@@ -12,9 +13,10 @@ const CartItem = (props: CartItemProps) => {
 const { product } = props;
 const { removeItem } = useCart();
 
+
   return (
     <li className="flex py-6 border-b">
-      {/* <ProductImage slug={product.id} url={product.images[0].url} /> */}
+      <BookImage id={product.id} url={product.images[0].url} title={product.title} />
       <div className="flex justify-between flex-1 px-6">
         <div>
           <h2 className="text-lg font-bold">{product.title}</h2>

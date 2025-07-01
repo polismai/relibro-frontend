@@ -10,6 +10,7 @@ import CatalogFilters from "./components/catalog-filters";
 import { useState } from "react";
 import { useGetGenres } from "@/api/getGenres";
 import { FilterOptions } from "@/types/filters";
+import SearchInput from "@/components/searchInput";
 
 export default function CatalogPageByCategory() {
   const { category } = useParams();
@@ -50,6 +51,8 @@ export default function CatalogPageByCategory() {
         <h1 className="text-3xl font-medium mb-2">{CATEGORY_LABELS[category as string]}</h1>
       )}
       <Separator />
+
+      <SearchInput />
 
       <div className="sm:flex sm:justify-between mt-8">
         <CatalogFilters filters={filters} genres={genres} onFilterChange={handleFilterChange} />
