@@ -5,7 +5,7 @@ const dataFooter = [
   {
     id: 1,
     name: "Sobre nosotros",
-    link: "#"
+    link: "/about"
   },
   {
     id: 2,
