@@ -80,7 +80,7 @@ const Hero = () => {
 
         <div className="flex justify-center">
           <Image
-            src="/images/hero-books.png" 
+            src="/images/hero_books.png" 
             alt="Libros usados"
             width={500}
             height={500}

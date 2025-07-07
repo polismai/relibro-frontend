@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/hooks/use-cart';
 
 type User = {
   id: string;
@@ -22,18 +23,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
- useEffect(() => {
-  if (!user) {
-    fetch('http://localhost:3001/api/auth/me', {
-      credentials: 'include',
-    })
+  useEffect(() => {
+    if (!user) {
+      useCart.getState().removeAll(); 
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      fetch('http://localhost:3001/api/auth/me', {
+        credentials: 'include',
+      })
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.user) setUser(data.user);
       })
       .catch(() => {});
-  }
-}, [user]);
+    }
+  }, [user]);
 
   const login = (userData: User) => {
     setUser(userData);
@@ -49,6 +56,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error('Error al cerrar sesión', err);
     } finally {
       setUser(null);
+      useCart.getState().removeAll();
       router.push('/');
     }
   };

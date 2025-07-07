@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { formatPrice } from "@/lib/formatPrice";
+import { GENRE_LABELS } from "@/types/genre";
 import { BookType } from "@/types/product";
 import { Heart } from "lucide-react";
 
@@ -25,7 +26,7 @@ const { handleAddToCart } = useAddToCart();
         <h1 className="text-2xl">{product.title}</h1>
         <div className="flex items-center justify-between gap-3">
           <p className="px-2 py-1 text-xs text-white bg-black rounded-full w-fit">
-            {product.genre}
+            {GENRE_LABELS[product.genre as string]}
           </p>
         </div>
       </div>

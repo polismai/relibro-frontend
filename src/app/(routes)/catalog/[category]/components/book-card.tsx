@@ -27,6 +27,7 @@ import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { formatPrice } from "@/lib/formatPrice";
 import { BookType } from "@/types/product";
 import IconButton from "@/components/icon-button";
+import { GENRE_LABELS } from "@/types/genre";
 // import { CATEGORY_LABELS } from "@/types/category";
 
 type BookCardProps = {
@@ -43,7 +44,7 @@ export const BookCard = ({ book }: BookCardProps) => {
     <div className="relative transition-all duration-100 rounded-lg hover:shadow-md">
       <div className="absolute flex items-center justify-between gap-3 px-2 z-[1] top-4">
         <p className="px-2 py-1 text-xs text-white bg-black rounded-full dark:bg-white dark:text-black w-fit">
-          {book.genre}
+          {GENRE_LABELS[book.genre as string]}
         </p>
       </div>
 

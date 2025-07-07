@@ -5,7 +5,6 @@ import Navbar from "@/components/navbar";
 import { AuthProvider } from "../../context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
-import SearchInput from "@/components/searchInput";
 
 const quicksand = Quicksand({ subsets: ['latin'] });
 

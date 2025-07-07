@@ -42,17 +42,19 @@ export default function CatalogPageByCategory() {
     //     )}
     //   </div>
     // </div>
-    <div className="max-w-7xl py-4 mx-auto sm:py-16 sm:px-24">
+    <div className="max-w-7xl p-4 mx-auto sm:py-16 sm:px-24">
       {error && (
         <p className="mb-4 text-red-500 text-center">{error}</p>
       )}
 
       {!loading && books !== null && (
-        <h1 className="text-3xl font-medium mb-2">{CATEGORY_LABELS[category as string]}</h1>
+        <div className="flex items-center w-full justify-between">
+          <h1 className="text-3xl font-medium mb-2">{CATEGORY_LABELS[category as string]}</h1>
+          <SearchInput />
+        </div>
+        
       )}
       <Separator />
-
-      <SearchInput />
 
       <div className="sm:flex sm:justify-between mt-8">
         <CatalogFilters filters={filters} genres={genres} onFilterChange={handleFilterChange} />
