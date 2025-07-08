@@ -5,43 +5,49 @@ import { useGetBooks } from "@/api/getBooks";
 import SkeletonSchema from "@/components/skeletonSchema";
 import { CATEGORY_LABELS } from "@/types/category";
 import { Separator } from "@/components/ui/separator";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import CatalogFilters from "./components/catalog-filters";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetGenres } from "@/api/getGenres";
 import { FilterOptions } from "@/types/filters";
 import SearchInput from "@/components/searchInput";
 
 export default function CatalogPageByCategory() {
   const { category } = useParams();
+  const searchParams = useSearchParams();
   const { genres } = useGetGenres();
 
   const [filters, setFilters] = useState<FilterOptions>({
     category: category as string,
     genre: "",
+    school: "",
     minPrice: undefined,
     maxPrice: undefined,
     sortBy: "",
+    search: "",
   });
 
-  const { books, loading, error } = useGetBooks(filters);
+  // 🟨 Limpia el search cuando cambia la categoría
+  useEffect(() => {
+    setFilters((prev) => ({
+      ...prev,
+      category: category as string,
+      search: "",
+    }));
+  }, [category]);
+
+  useEffect(() => {
+    const search = searchParams.get("search") || "";
+    setFilters((prev) => ({ ...prev, search }));
+  }, [searchParams]);
 
   const handleFilterChange = (newFilters: Partial<FilterOptions>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 
+  const { books, loading, error } = useGetBooks(filters);
 
   return (
-    // <div className="max-w-6xl px-6 py-12 mx-auto">
-    //   <h1 className="mb-8 text-3xl font-bold text-center">{CATEGORY_LABELS[category as string]}</h1>
-    //   <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    //     {books && books.length > 0 ? (
-    //       books.map((book) => <BookCard key={book.id} book={book} />)
-    //     ) : (
-    //       <p>No hay libros en esta categoría.</p>
-    //     )}
-    //   </div>
-    // </div>
     <div className="max-w-7xl p-4 mx-auto sm:py-16 sm:px-24">
       {error && (
         <p className="mb-4 text-red-500 text-center">{error}</p>

@@ -15,6 +15,7 @@ export default function AddBookPage() {
     title: "",
     author: "",
     genre: "",
+    school: "",
     subject: "",
     schoolYear: "",
     description: "",
@@ -77,14 +78,18 @@ export default function AddBookPage() {
           ))}
         </select>
         
-        <input
-          name="title"
-          placeholder="Título"
-          value={form.title}
-          onChange={handleChange}
-          className="w-full border border-gray-300 p-2 rounded"
-          required
-        />
+        <div className="flex items-center gap-2">
+          <input
+            name="title"
+            placeholder="Título"
+            value={form.title}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded"
+            required
+          />
+          <span className="text-red-500 text-3xl mt-2">*</span>
+        </div>
+        
 
         {form.category === "school" && (
           <>
@@ -105,6 +110,14 @@ export default function AddBookPage() {
               className="w-full border border-gray-300 p-2 rounded"
               required
             />
+
+            <input
+              name="school"
+              placeholder="Colegio"
+              value={form.subject}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded"
+             />
           </>
         )}
 

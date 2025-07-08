@@ -4,4 +4,6 @@ export type FilterOptions = {
   minPrice?: number;
   maxPrice?: number;
   sortBy?: string;
+  school?: string;
+  search?: string;
 };
