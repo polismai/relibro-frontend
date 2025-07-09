@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { Separator } from "./ui/separator";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthProvider";
+import { toast } from "sonner";
 
 const dataFooter = [
   {
@@ -15,11 +20,14 @@ const dataFooter = [
   {
     id: 3,
     name: "Mi cuenta",
-    link: "#"
+    link: "/profile"
   },
 ]
 
 export const Footer = () => {
+  const router = useRouter();
+  const { user } = useAuth();       
+  
   return (
     <footer className="mt-4">
       <div className="max-w-screen-xl mx-auto p-4 md:py-8">
@@ -31,7 +39,25 @@ export const Footer = () => {
           <ul className="flex flex-wrap items-center mb-4 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
             {dataFooter.map((data) => (
               <li key={data.id}>
-                <Link href={data.link} className="hover:underline me-4 md:me-6">{data.name}</Link>
+                {data.name === "Mi cuenta" ? (
+                  <button
+                    className="hover:underline me-4 md:me-6 text-sm text-gray-500 dark:text-gray-400"
+                    onClick={() => {
+                      if (!user) {
+                        toast.info("Tenés que iniciar sesión para acceder a tu cuenta.");
+                        router.push("/login?redirect=/profile");
+                      } else {
+                        router.push("/profile");
+                      }
+                    }}
+                  >
+                    {data.name}
+                  </button>
+                ) : (
+                  <Link href={data.link} className="hover:underline me-4 md:me-6">
+                    {data.name}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

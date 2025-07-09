@@ -4,6 +4,7 @@ import { BaggageClaim, ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthProvider";
 import { useCart } from "@/hooks/use-cart";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const router = useRouter();
@@ -23,7 +24,14 @@ const Navbar = () => {
             strokeWidth="1"
             className="cursor-pointer hover:text-white transition-colors"
             aria-label="Perfil del usuario"
-            onClick={() => router.push("/profile")}
+            onClick={() => {
+              if (!user) {
+                toast.info("Tenés que iniciar sesión para ver tu perfil.");
+                router.push("/login?redirect=/profile");
+              } else {
+                router.push("/profile");
+              }
+            }}
           />
 
           {user && (

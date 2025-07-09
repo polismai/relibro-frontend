@@ -69,10 +69,11 @@ export default function CatalogPageByCategory() {
           {loading && (
             <SkeletonSchema grid={3} />
           )}
-          {!loading && books && books.length > 0 ? (
+          {!loading && books && books.length > 0 && (
             books.map((book) => <BookCard key={book.id} book={book} />)
-          ) : (
-          <p className="col-span-full mt-16 text-gray-500 text-lg">No hay libros disponibles en esta categoría.</p>
+          )}
+          {!loading && books?.length === 0 && (
+            <p className="col-span-full mt-16 text-gray-500 text-lg">No hay libros disponibles en esta categoría.</p>
           )}
         </div>
       </div>

@@ -8,9 +8,9 @@ import InfoProduct from "./components/info-product";
 
 export default function Page() {
   const params = useParams();
-  const { productSlug } = params;
+  const { bookSlug } = params;
 
-  const { result } = useGetBookById(productSlug);
+  const { result } = useGetBookById(bookSlug);
 
   if (result === null) {
     return <SkeletonProduct />

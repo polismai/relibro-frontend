@@ -58,7 +58,7 @@ export const BookCard = ({ book }: BookCardProps) => {
         <div className="absolute w-full px-6 transition duration-200 opacity-0 group-hover:opacity-100 bottom-5">
           <div className="flex justify-center gap-x-6">
             <IconButton
-              onClick={() => router.push(`/product/${book.id}`)}
+              onClick={() => router.push(`/book/${book.id}`)}
               icon={<Expand size={20} className="text-gray-600" />}
             />
             <IconButton
