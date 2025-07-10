@@ -19,6 +19,7 @@ export default function CatalogPageByCategory() {
 
   const [filters, setFilters] = useState<FilterOptions>({
     category: category as string,
+    onlyAvailable: true,
     genre: "",
     school: "",
     minPrice: undefined,
