@@ -4,12 +4,23 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "../../../../context/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useGetBooksByUser } from "../../../api/getBooksByUser";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 /* eslint-disable @next/next/no-img-element */
 export default function ProfilePage() {
   const { user } = useAuth(); 
   const router = useRouter();
   const { books, loading } = useGetBooksByUser(user?.id); 
+
+  useEffect(() => {
+    if (!user) {
+      toast.info("Tenés que iniciar sesión para acceder a tu cuenta.");
+      router.push("/login?redirect=/profile");
+    }
+  }, [user, router]);
+
+  if (!user) return null; 
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -48,7 +59,7 @@ export default function ProfilePage() {
                   <Button variant="outline" onClick={() => router.push(`/edit-book/${book.id}`)}>
                     Editar
                   </Button>
-                  <Button variant="destructive">Eliminar</Button>
+                  <Button variant="destructive">Vendido</Button>
                 </div>
               </div>
             ))}
