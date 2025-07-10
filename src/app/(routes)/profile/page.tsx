@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useAuth } from "../../../../context/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useGetBooksByUser } from "../../../api/getBooksByUser";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import BookCardUser from "./components/book-card-user";
 
 /* eslint-disable @next/next/no-img-element */
 export default function ProfilePage() {
@@ -13,14 +13,14 @@ export default function ProfilePage() {
   const router = useRouter();
   const { books, loading } = useGetBooksByUser(user?.id); 
 
-  useEffect(() => {
-    if (!user) {
-      toast.info("Tenés que iniciar sesión para acceder a tu cuenta.");
-      router.push("/login?redirect=/profile");
-    }
-  }, [user, router]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     toast.info("Tenés que iniciar sesión para acceder a tu cuenta.");
+  //     router.push("/login?redirect=/profile");
+  //   }
+  // }, [user, router]);
 
-  if (!user) return null; 
+  // if (!user) return null; 
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -47,21 +47,7 @@ export default function ProfilePage() {
         ) : (
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
             {books.map((book) => (
-              <div key={book.id} className="border rounded-lg p-4 shadow-sm">
-                <img
-                  src={book.images[0]?.url || "/placeholder.jpg"}
-                  alt={book.title}
-                  className="w-full h-40 object-cover rounded mb-2"
-                />
-                <h3 className="font-semibold">{book.title}</h3>
-                <p className="text-sm text-gray-600">${book.price}</p>
-                <div className="mt-2 flex gap-2">
-                  <Button variant="outline" onClick={() => router.push(`/edit-book/${book.id}`)}>
-                    Editar
-                  </Button>
-                  <Button variant="destructive">Vendido</Button>
-                </div>
-              </div>
+             <BookCardUser key={book.id} book={book} />
             ))}
           </div>
         )}
