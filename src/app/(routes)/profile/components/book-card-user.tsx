@@ -24,6 +24,7 @@ function BookCardUser({ book }: { book: BookType }) {
         newAvailability ? "Libro marcado como disponible" : "Libro marcado como vendido"
       );
     } catch (error) {
+      console.error(error);
       toast.error("Error al actualizar el estado del libro");
     } finally {
       toast.dismiss(toastId);

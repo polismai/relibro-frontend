@@ -1,16 +1,12 @@
 "use client";
 
 import { useAuth } from "../../../../context/AuthProvider";
-import { useRouter } from "next/navigation";
 import { useGetBooksByUser } from "../../../api/getBooksByUser";
-import { useEffect } from "react";
-import { toast } from "sonner";
 import BookCardUser from "./components/book-card-user";
 
 /* eslint-disable @next/next/no-img-element */
 export default function ProfilePage() {
   const { user } = useAuth(); 
-  const router = useRouter();
   const { books, loading } = useGetBooksByUser(user?.id); 
 
   // useEffect(() => {

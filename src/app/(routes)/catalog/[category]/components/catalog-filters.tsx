@@ -48,27 +48,64 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
         <h2 className="text-lg font-semibold">Filtrar por</h2>
 
         {/* Género */}
-        <div className="flex flex-col gap-2">
-          <Label>Género</Label>
-          <Select
-            value={filters.genre || "none"}
-            onValueChange={(value) => 
-              handleChange("genre", value === "none" ? undefined : value)
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Todos los géneros" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">Todos los géneros</SelectItem>
-              {genres.map((genre) => (
-                <SelectItem key={genre.value} value={genre.value}>
-                  {genre.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {filters.category === "story" && (
+          <div className="flex flex-col gap-2">
+            <Label>Género</Label>
+            <Select
+              value={filters.genre || "none"}
+              onValueChange={(value) => 
+                handleChange("genre", value === "none" ? undefined : value)
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Todos los géneros" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Todos los géneros</SelectItem>
+                {genres.map((genre) => (
+                  <SelectItem key={genre.value} value={genre.value}>
+                    {genre.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+        
+        {/* Colegio (solo para school) */}
+        {filters.category === "school" && (
+          <>
+            <div className="flex flex-col gap-2">
+              <Label>Colegio</Label>
+              <Input
+                type="text"
+                placeholder="Ej: IUA"
+                value={filters.school ?? ""}
+                onChange={(e) => handleChange("school", e.target.value || undefined)}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>Materia</Label>
+              <Input
+                type="text"
+                placeholder="Ej: Matemática"
+                value={filters.subject ?? ""}
+                onChange={(e) => handleChange("subject", e.target.value || undefined)}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>Año escolar</Label>
+              <Input
+                type="text"
+                placeholder="Ej: 2° de liceo"
+                value={filters.schoolYear ?? ""}
+                onChange={(e) => handleChange("schoolYear", e.target.value || undefined)}
+              />
+            </div>
+          </>
+        )}
 
         {/* Precio mínimo */}
         <div className="flex flex-col gap-2">
