@@ -21,6 +21,8 @@ export default function CatalogPageByCategory() {
     category: category as string,
     onlyAvailable: true,
     genre: "",
+    schoolYear: "",
+    subject: "",
     school: "",
     minPrice: undefined,
     maxPrice: undefined,
@@ -63,10 +65,10 @@ export default function CatalogPageByCategory() {
       )}
       <Separator />
 
-      <div className="sm:flex sm:justify-between mt-8">
+      <div className="sm:flex sm:gap-4 mt-8">
         <CatalogFilters filters={filters} genres={genres} onFilterChange={handleFilterChange} />
 
-        <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-10 ml-6">
+        <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-10">
           {loading && (
             <SkeletonSchema grid={3} />
           )}
@@ -74,7 +76,9 @@ export default function CatalogPageByCategory() {
             books.map((book) => <BookCard key={book.id} book={book} />)
           )}
           {!loading && books?.length === 0 && (
-            <p className="col-span-full mt-16 text-gray-500 text-lg">No hay libros disponibles en esta categoría.</p>
+            <div className="col-span-full justify-center flex mt-16 md:col-span-3">
+              <p className="text-gray-500 text-lg">No hay libros disponibles en esta categoría.</p>
+            </div>
           )}
         </div>
       </div>

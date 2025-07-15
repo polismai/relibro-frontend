@@ -1,16 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { createBook } from "@/api/createBook";
+import { useGetBookById } from "@/api/getBookById";
 import { useGetCategories } from "@/api/getCategories";
 import { useGetGenres } from "@/api/getGenres";
+import { updateBook } from "@/api/updateBook";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-export default function AddBookPage() {
+export default function EditBookPage() {
+  const { id } = useParams();
+  const safeId = typeof id === "string" ? id : "";
   const { categories } = useGetCategories();
   const { genres } = useGetGenres();
   const router = useRouter();
+
+  const { result, loading, error } = useGetBookById(safeId);
+
   const [form, setForm] = useState({
     title: "",
     author: "",
@@ -23,74 +29,63 @@ export default function AddBookPage() {
     category: "",
   });
 
-  const [images, setImages] = useState<FileList | null>(null);
+  useEffect(() => {
+    if (result) {
+      setForm({
+        title: result.title || "",
+        author: result.author || "",
+        genre: result.genre || "",
+        school: result.school || "",
+        subject: result.subject || "",
+        schoolYear: result.schoolYear || "",
+        description: result.description || "",
+        price: result.price?.toString() || "",
+        category: result.category || "",
+      });
+    }
+  }, [result]);
+
+  if (!safeId) {
+    return <p className="text-center text-red-500">ID inválido</p>;
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImages(e.target.files);
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const toastId = toast.loading("Cargando libro...");
+    const toastId = toast.loading("Actualizando libro...");
 
     try {
-      await createBook(form, images);
-
+      await updateBook(safeId, form); 
       toast.dismiss(toastId);
-      toast.success("Libro cargado exitosamente", {
-        description: "Ya está disponible en la tienda",
-        duration: 3000,
-      });
-
-      router.push("/");
-    } catch (error) {
-      console.error(error);
+      toast.success("Libro actualizado correctamente");
+      router.push("/profile");
+    } catch (err) {
+      console.error(err);
       toast.dismiss(toastId);
-      toast.error("Error al cargar el libro. Intentá nuevamente", {
-        duration: 3000,
-      });
+      toast.error("Error al actualizar el libro");
     }
   };
 
+  if (loading) return <p className="text-center">Cargando libro...</p>;
+  if (error) return <p className="text-center text-red-500">No se pudo cargar el libro</p>;
+
   return (
     <div className="max-w-3xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-6">Agregar nuevo libro</h2>
+      <h2 className="text-2xl font-bold mb-6">Editar libro</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
-        <select
-          name="category"
-          value={form.category}
+        <input
+          name="title"
+          placeholder="Título"
+          value={form.title}
           onChange={handleChange}
           className="w-full border border-gray-300 p-2 rounded"
-          required
-        >
-          <option value="">Seleccionar categoría</option>
-          {categories?.map((cat) => (
-            <option key={cat.value} value={cat.value}>{cat.label}</option>
-          ))}
-        </select>
-        
-        <div className="flex items-center gap-2">
-          <input
-            name="title"
-            placeholder="Título"
-            value={form.title}
-            onChange={handleChange}
-            className="w-full border border-gray-300 p-2 rounded"
-            required
-          />
-          <span className="text-red-500 text-3xl mt-2">*</span>
-        </div>
-        
-
+        />
+  
         {form.category === "school" && (
           <>
             <input
@@ -99,7 +94,6 @@ export default function AddBookPage() {
               value={form.subject}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
-              required
              />
 
             <input
@@ -108,7 +102,6 @@ export default function AddBookPage() {
               value={form.schoolYear}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
-              required
             />
 
             <input
@@ -162,24 +155,16 @@ export default function AddBookPage() {
           value={form.price}
           onChange={handleChange}
           className="w-full border border-gray-300 p-2 rounded"
-          required
-        />
-
-        <input
-          type="file"
-          name="images"
-          multiple
-          onChange={handleImageChange}
-          className="block text-sm"
         />
 
         <button
           type="submit"
           className="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700 transition"
         >
-          Cargar libro
+          Guardar cambios
         </button>
       </form>
     </div>
   );
 }
+

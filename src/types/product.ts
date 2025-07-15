@@ -15,9 +15,12 @@ export type BookType = {
   id: string;
   title: string;
   author?: string;
+  school?: string;
+  subject?: string;
+  schoolYear?: string;
   genre?: string;
   description?: string;
-  price: number;
+  price: string;
   isAvailable: boolean;
   category: string;
   images: BookImageType[];
