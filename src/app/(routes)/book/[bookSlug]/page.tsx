@@ -7,10 +7,10 @@ import CarouselProduct from "./components/carousel-product";
 import InfoProduct from "./components/info-product";
 
 export default function Page() {
-  const params = useParams();
-  const { bookSlug } = params;
+  const { bookSlug } = useParams();
+  const safeBookSlug = typeof bookSlug === "string" ? bookSlug : "";
 
-  const { result } = useGetBookById(bookSlug);
+  const { result } = useGetBookById(safeBookSlug);
 
   if (result === null) {
     return <SkeletonProduct />

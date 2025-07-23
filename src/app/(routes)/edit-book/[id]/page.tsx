@@ -1,7 +1,6 @@
 "use client";
 
 import { useGetBookById } from "@/api/getBookById";
-import { useGetCategories } from "@/api/getCategories";
 import { useGetGenres } from "@/api/getGenres";
 import { updateBook } from "@/api/updateBook";
 import { useParams, useRouter } from "next/navigation";
@@ -11,7 +10,6 @@ import { toast } from "sonner";
 export default function EditBookPage() {
   const { id } = useParams();
   const safeId = typeof id === "string" ? id : "";
-  const { categories } = useGetCategories();
   const { genres } = useGetGenres();
   const router = useRouter();
 
@@ -39,7 +37,7 @@ export default function EditBookPage() {
         subject: result.subject || "",
         schoolYear: result.schoolYear || "",
         description: result.description || "",
-        price: result.price?.toString() || "",
+        price: result.price ? result.price.toString() : "",
         category: result.category || "",
       });
     }
@@ -60,7 +58,10 @@ export default function EditBookPage() {
     const toastId = toast.loading("Actualizando libro...");
 
     try {
-      await updateBook(safeId, form); 
+      await updateBook(safeId, {
+        ...form,
+      price: Number(form.price),
+    }); 
       toast.dismiss(toastId);
       toast.success("Libro actualizado correctamente");
       router.push("/profile");

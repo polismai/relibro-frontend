@@ -18,20 +18,22 @@ interface CarouselProductProps {
 
 const CarouselProduct = ({ images }: CarouselProductProps) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null); // 👈 nuevo
   const [activeIndex, setActiveIndex] = useState(0);
-
-
 
   return (
     <div className="flex flex-col sm:flex gap-4 px-6 sm:px-16">
-  {/* Carrusel principal (común a ambos tamaños) */}
+      {/* Carrusel principal */}
       <div className="w-full sm:flex-1 order-1 sm:order-none">
         <Swiper
+          onSwiper={setMainSwiper} // 👈 importante
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
           spaceBetween={10}
           navigation
           pagination={{ clickable: true }}
-          thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+          thumbs={{
+            swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+          }}
           modules={[Navigation, Thumbs, Pagination]}
           className="w-full h-[400px] sm:h-[500px]"
         >
@@ -58,7 +60,10 @@ const CarouselProduct = ({ images }: CarouselProductProps) => {
           >
             {images.map((img, index) => (
               <SwiperSlide key={img.id}>
-                <div className="w-full h-32 flex items-center justify-center overflow-hidden bg-white rounded cursor-pointer">
+                <div
+                  className="w-full h-32 flex items-center justify-center overflow-hidden bg-white rounded cursor-pointer"
+                  onClick={() => mainSwiper?.slideTo(index)} // 👈 sincroniza al hacer click
+                >
                   <img
                     src={img.url}
                     alt="thumbnail"
@@ -89,7 +94,10 @@ const CarouselProduct = ({ images }: CarouselProductProps) => {
         >
           {images.map((img, index) => (
             <SwiperSlide key={img.id}>
-              <div className="w-full h-32 flex items-center justify-center overflow-hidden bg-white rounded cursor-pointer">
+              <div
+                className="w-full h-32 flex items-center justify-center overflow-hidden bg-white rounded cursor-pointer"
+                onClick={() => mainSwiper?.slideTo(index)} // 👈 opcional también en desktop
+              >
                 <img
                   src={img.url}
                   alt="thumbnail"
@@ -110,9 +118,6 @@ const CarouselProduct = ({ images }: CarouselProductProps) => {
 };
 
 export default CarouselProduct;
-
-
-
 
 
 

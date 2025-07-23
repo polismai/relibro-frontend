@@ -20,7 +20,7 @@ export type BookType = {
   schoolYear?: string;
   genre?: string;
   description?: string;
-  price: string;
+  price: number;
   isAvailable: boolean;
   category: string;
   images: BookImageType[];

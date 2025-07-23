@@ -14,7 +14,7 @@ export function useAddToCart() {
   const handleAddToCart = (book: BookType) => {
     if (!user) {
       toast.info("Tenés que iniciar sesión para agregar libros al carrito.");
-      router.push(`/login?redirect=/product/${book.id}`);
+      router.push(`/login?redirect=/book/${book.id}`);
       return;
     }
 
