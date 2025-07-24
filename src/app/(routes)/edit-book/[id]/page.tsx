@@ -3,6 +3,7 @@
 import { useGetBookById } from "@/api/getBookById";
 import { useGetGenres } from "@/api/getGenres";
 import { useGetSchools } from "@/api/getSchools";
+import { useGetSchoolYears } from "@/api/getSchoolYears";
 import { updateBook } from "@/api/updateBook";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ export default function EditBookPage() {
   const safeId = typeof id === "string" ? id : "";
   const { genres } = useGetGenres();
   const { schools } = useGetSchools();
+  const { schoolYears } = useGetSchoolYears();
   const router = useRouter();
 
   const { result, loading, error } = useGetBookById(safeId);
@@ -99,13 +101,19 @@ export default function EditBookPage() {
               className="w-full border border-gray-300 p-2 rounded"
              />
 
-            <input
+             <select
               name="schoolYear"
-              placeholder="Año escolar"
               value={form.schoolYear}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
-            />
+             >
+              <option value="">Seleccioná el año escolar</option>
+              {schoolYears.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
 
             <select
               name="school"

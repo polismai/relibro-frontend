@@ -7,11 +7,13 @@ import { createBook } from "@/api/createBook";
 import { useGetCategories } from "@/api/getCategories";
 import { useGetGenres } from "@/api/getGenres";
 import { useGetSchools } from "@/api/getSchools";
+import { useGetSchoolYears } from "@/api/getSchoolYears";
 
 export default function AddBookPage() {
   const { categories } = useGetCategories();
   const { genres } = useGetGenres();
   const { schools } = useGetSchools();
+  const { schoolYears } = useGetSchoolYears();
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
@@ -100,14 +102,19 @@ export default function AddBookPage() {
               required
              />
 
-            <input
+            <select
               name="schoolYear"
-              placeholder="Año escolar"
               value={form.schoolYear}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
-              required
-            />
+             >
+              <option value="">Seleccioná el año escolar</option>
+              {schoolYears.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
 
             <select
               name="school"
