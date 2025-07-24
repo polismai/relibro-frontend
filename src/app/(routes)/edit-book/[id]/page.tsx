@@ -2,6 +2,7 @@
 
 import { useGetBookById } from "@/api/getBookById";
 import { useGetGenres } from "@/api/getGenres";
+import { useGetSchools } from "@/api/getSchools";
 import { updateBook } from "@/api/updateBook";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ export default function EditBookPage() {
   const { id } = useParams();
   const safeId = typeof id === "string" ? id : "";
   const { genres } = useGetGenres();
+  const { schools } = useGetSchools();
   const router = useRouter();
 
   const { result, loading, error } = useGetBookById(safeId);
@@ -105,13 +107,19 @@ export default function EditBookPage() {
               className="w-full border border-gray-300 p-2 rounded"
             />
 
-            <input
+            <select
               name="school"
-              placeholder="Colegio"
               value={form.school}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
-             />
+            >
+              <option value="">Seleccioná un colegio</option>
+                {schools.map((school) => (
+                  <option key={school} value={school}>
+                    {school}
+                  </option>
+                ))}
+            </select>
           </>
         )}
 

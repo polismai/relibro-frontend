@@ -80,19 +80,15 @@ export default function AddBookPage() {
           ))}
         </select>
         
-        <div className="flex items-center gap-2">
-          <input
-            name="title"
-            placeholder="Título"
-            value={form.title}
-            onChange={handleChange}
-            className="w-full border border-gray-300 p-2 rounded"
-            required
-          />
-          <span className="text-red-500 text-3xl mt-2">*</span>
-        </div>
-        
-
+        <input
+          name="title"
+          placeholder="Título"
+          value={form.title}
+          onChange={handleChange}
+          className="w-full border border-gray-300 p-2 rounded"
+          required
+        />
+          
         {form.category === "school" && (
           <>
             <input
