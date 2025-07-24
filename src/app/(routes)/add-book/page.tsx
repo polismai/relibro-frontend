@@ -6,10 +6,12 @@ import { toast } from "sonner";
 import { createBook } from "@/api/createBook";
 import { useGetCategories } from "@/api/getCategories";
 import { useGetGenres } from "@/api/getGenres";
+import { useGetSchools } from "@/api/getSchools";
 
 export default function AddBookPage() {
   const { categories } = useGetCategories();
   const { genres } = useGetGenres();
+  const { schools } = useGetSchools();
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
@@ -111,13 +113,19 @@ export default function AddBookPage() {
               required
             />
 
-            <input
+            <select
               name="school"
-              placeholder="Colegio"
               value={form.school}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
-             />
+             >
+              <option value="">Seleccioná un colegio</option>
+              {schools.map((school) => (
+                <option key={school} value={school}>
+                  {school}
+                </option>
+              ))}
+            </select>
           </>
         )}
 
