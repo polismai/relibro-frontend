@@ -12,6 +12,7 @@ export async function updateBook(id: string, data: Partial<BookType>) {
 
   if (!res.ok) {
     const errorData = await res.json();
+    console.log("Este es el error", errorData)
     throw new Error(errorData.message.split("::")[1] || "Error al actualizar el libro");
   }
 

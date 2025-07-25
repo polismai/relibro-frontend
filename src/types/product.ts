@@ -20,6 +20,7 @@ export type BookType = {
   schoolYear?: string;
   genre?: string;
   description?: string;
+  conditionNote?: string;
   price: number;
   isAvailable: boolean;
   category: string;

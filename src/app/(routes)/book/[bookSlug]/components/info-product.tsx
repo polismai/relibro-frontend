@@ -17,6 +17,8 @@ const InfoProduct = (props: InfoProductProps) => {
 const { product } = props;
 const { handleAddToCart } = useAddToCart();
 
+console.log("este es el producto", product)
+
 // const { addItem } = useCart();
 // const { addLovedItem } = useLovedProducts();
 
@@ -31,7 +33,17 @@ const { handleAddToCart } = useAddToCart();
         </div>
       </div>
       <Separator className="my-4" />
-      <p>{product.description}</p>
+      {product.description && (
+        <p>{product.description}</p>
+      )}
+
+      {product.conditionNote && (
+        <>
+          <Separator className="my-4" />
+          <p className="text-sm text-gray-600 italic">{product.conditionNote}</p>
+        </>
+      )}
+
       <Separator className="my-4" />
       <p className="my-4 text-2xl">{formatPrice(product.price)}</p>
       <div className="flex items-center gap-5">

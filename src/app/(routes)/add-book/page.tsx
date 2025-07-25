@@ -23,6 +23,7 @@ export default function AddBookPage() {
     subject: "",
     schoolYear: "",
     description: "",
+    conditionNote: "",
     price: "",
     category: "",
   });
@@ -142,6 +143,15 @@ export default function AddBookPage() {
               className="w-full border border-gray-300 p-2 rounded"
             />
 
+            <textarea
+              name="description"
+              placeholder="(Opcional) Comentá brevemente de qué trata el libro."
+              value={form.description}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded resize-none"
+              rows={4}
+            />
+
             <select
               name="genre"
               value={form.genre}
@@ -157,9 +167,9 @@ export default function AddBookPage() {
         )}
         
         <textarea
-          name="description"
-          placeholder="Descripción"
-          value={form.description}
+          name="conditionNote"
+          placeholder="(Opcional) Comentá si el libro está escrito, subrayado o en qué estado se encuentra."
+          value={form.conditionNote}
           onChange={handleChange}
           className="w-full border border-gray-300 p-2 rounded resize-none"
           rows={4}
