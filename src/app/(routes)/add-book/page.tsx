@@ -111,8 +111,8 @@ export default function AddBookPage() {
              >
               <option value="">Seleccioná el año escolar</option>
               {schoolYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
+                <option key={year.id} value={year.id}>
+                  {year.name}
                 </option>
               ))}
             </select>
