@@ -17,8 +17,6 @@ const InfoProduct = (props: InfoProductProps) => {
 const { product } = props;
 const { handleAddToCart } = useAddToCart();
 
-console.log("este es el producto", product)
-
 // const { addItem } = useCart();
 // const { addLovedItem } = useLovedProducts();
 
@@ -40,7 +38,7 @@ console.log("este es el producto", product)
       {product.conditionNote && (
         <>
           <Separator className="my-4" />
-          <p className="text-sm text-gray-600 italic">{product.conditionNote}</p>
+          <p>{product.conditionNote}</p>
         </>
       )}
 

@@ -10,11 +10,12 @@ export async function updateBook(id: string, data: Partial<BookType>) {
     body: JSON.stringify(data),
   });
 
+  const result = await res.json();
+
   if (!res.ok) {
-    const errorData = await res.json();
-    console.log("Este es el error", errorData)
-    throw new Error(errorData.message.split("::")[1] || "Error al actualizar el libro");
+    throw new Error(result.message.split("::")[1] || "Error al actualizar el libro");
   }
 
-  return res.json();
+  console.log("Respuesta del backend", result)
+  return result;
 }

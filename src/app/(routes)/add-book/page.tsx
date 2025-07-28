@@ -125,8 +125,8 @@ export default function AddBookPage() {
              >
               <option value="">Seleccioná un colegio</option>
               {schools.map((school) => (
-                <option key={school} value={school}>
-                  {school}
+                <option key={school.id} value={school.id}>
+                  {school.name}
                 </option>
               ))}
             </select>

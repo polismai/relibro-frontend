@@ -5,6 +5,7 @@ import { useGetGenres } from "@/api/getGenres";
 import { useGetSchools } from "@/api/getSchools";
 import { useGetSchoolYears } from "@/api/getSchoolYears";
 import { updateBook } from "@/api/updateBook";
+import { BookFormType } from "@/types/updateBookForm";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -12,24 +13,24 @@ import { toast } from "sonner";
 export default function EditBookPage() {
   const { id } = useParams();
   const safeId = typeof id === "string" ? id : "";
+  const router = useRouter();
+
   const { genres } = useGetGenres();
   const { schools } = useGetSchools();
   const { schoolYears } = useGetSchoolYears();
-  const router = useRouter();
-
   const { result, loading, error } = useGetBookById(safeId);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<BookFormType>({
     title: "",
-    author: "",
-    genre: "",
-    school: "",
-    subject: "",
-    schoolYear: "",
-    description: "",
-    conditionNote: "",
-    price: "",
-    category: "",
+    author: null,
+    genre: null,
+    school: null,
+    subject: null,
+    schoolYear: null,
+    description: null,
+    conditionNote: null,
+    price: 0,
+    category: null,
   });
 
   useEffect(() => {
@@ -49,10 +50,6 @@ export default function EditBookPage() {
     }
   }, [result]);
 
-  if (!safeId) {
-    return <p className="text-center text-red-500">ID inválido</p>;
-  }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -60,14 +57,24 @@ export default function EditBookPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const toastId = toast.loading("Actualizando libro...");
 
     try {
-      await updateBook(safeId, {
-        ...form,
-      price: Number(form.price),
-    }); 
+      // Clonamos el formulario para limpiar los valores vacíos
+      const cleanedForm = { ...form };
+      
+      Object.entries(cleanedForm).forEach(([key, value]) => {
+      if (value === "") {
+        cleanedForm[key as keyof typeof cleanedForm] = null;
+      }
+      });
+
+      // Convertimos el price a número
+      cleanedForm.price = Number(form.price);
+
+      // Enviamos la actualización al backend
+      await updateBook(safeId, cleanedForm);
+
       toast.dismiss(toastId);
       toast.success("Libro actualizado correctamente");
       router.push("/profile");
@@ -78,6 +85,7 @@ export default function EditBookPage() {
     }
   };
 
+  if (!safeId) return <p className="text-center text-red-500">ID inválido</p>;
   if (loading) return <p className="text-center">Cargando libro...</p>;
   if (error) return <p className="text-center text-red-500">No se pudo cargar el libro</p>;
 
