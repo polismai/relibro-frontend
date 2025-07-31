@@ -46,7 +46,7 @@ const { handleAddToCart } = useAddToCart();
       <p className="my-4 text-2xl">{formatPrice(product.price)}</p>
       <div className="flex items-center gap-5">
         <Button className="w-full" onClick={() => handleAddToCart(product)} >
-          Comprar
+          Me interesa
         </Button>
         <Heart 
           width={30} 
