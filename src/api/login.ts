@@ -33,7 +33,7 @@ export const useLogin = () => {
       login(data.user);
 
       toast.success("Sesión iniciada con éxito", {
-        description: `Bienvenida, ${data.user.firstName}`,
+        description: `Bienvenida/o, ${data.user.firstName}`,
         duration: 3000,
       });
 

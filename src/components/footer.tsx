@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useAuth } from "../../context/AuthProvider";
 import { toast } from "sonner";
 
@@ -26,6 +27,7 @@ const dataFooter = [
 
 export const Footer = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { user } = useAuth();       
   
   return (
@@ -54,7 +56,13 @@ export const Footer = () => {
                     {data.name}
                   </button>
                 ) : (
-                  <Link href={data.link} className="hover:underline me-4 md:me-6">
+                  <Link 
+                    href={data.link} 
+                    className={`hover:underline me-4 md:me-6 ${
+                      pathname === data.link ? "font-bold underline" : ""
+                    }`}
+                    aria-current={pathname === data.link ? "page" : undefined}
+                  >
                     {data.name}
                   </Link>
                 )}

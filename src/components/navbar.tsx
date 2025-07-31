@@ -2,22 +2,60 @@
 
 import { BaggageClaim, ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { usePathname } from 'next/navigation';
 import { useAuth } from "../../context/AuthProvider";
 import { useCart } from "@/hooks/use-cart";
 import { toast } from "sonner";
+import Link from "next/link";
+
+const dataNavbar = [
+  {
+    id: 1,
+    name: "Sobre nosotros",
+    link: "/about"
+  },
+  {
+    id: 2,
+    name: "Catálogo",
+    link: "/catalog"
+  },
+  {
+    id: 3,
+    name: "Cómo funciona ReLibro",
+    link: "/how-it-works"
+  },
+]
 
 const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, logout } = useAuth();
   const cart = useCart();
 
   return (
     <div className="bg-stone-300 w-full">
       <div className="flex items-center justify-between p-4 mx-auto cursor-pointer sm:max-w-4xl md:max-w-7xl">
-        <h1 className="text-3xl" onClick={() => router.push("/")}>
-          Re<span className="font-bold">Libro</span>
-        </h1>
-
+        <div className="flex items-center gap-6">
+          <h1 className="text-3xl" onClick={() => router.push("/")}>
+            Re<span className="font-bold">Libro</span>
+          </h1>
+          <ul className="flex flex-wrap items-center mb-4 text-sm font-medium sm:mb-0">
+            {dataNavbar.map((data) => (
+              <li key={data.id}>
+                <Link 
+                  href={data.link} 
+                  className={`hover:underline me-4 md:me-6 ${
+                    pathname === data.link ? "font-bold underline" : ""
+                  }`}
+                  aria-current={pathname === data.link ? "page" : undefined}
+                >
+                  {data.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      
         <div className="flex items-center gap-2 sm:gap-7">
           
           <User

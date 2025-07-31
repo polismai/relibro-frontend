@@ -60,7 +60,7 @@ const Hero = () => {
 
   return (
     <section className="bg-neutral-50 py-16 px-6 sm:px-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+      <div className="sm:max-w-4xl md:max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
         <div className="text-center md:text-left">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
             Reencontrá tu próximo <span className="text-green-600">libro favorito</span>
