@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import { AuthProvider } from "../../context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 const quicksand = Quicksand({ subsets: ['latin'] });
 
@@ -20,18 +21,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={quicksand.className}>
-      <body className="min-h-screen flex flex-col">
-        <AuthProvider>
-          <header className="w-full">
-            <Navbar />
-          </header>
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Toaster richColors/>
-          <Footer />
-        </AuthProvider>
-      </body>
+      <UserProvider>
+        <body className="min-h-screen flex flex-col">
+          <AuthProvider>
+            <header className="w-full">
+              <Navbar />
+            </header>
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Toaster richColors/>
+            <Footer />
+          </AuthProvider>
+        </body>
+      </UserProvider>
     </html>
   );
 }

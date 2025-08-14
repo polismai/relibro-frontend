@@ -43,7 +43,7 @@ export const CarouselTextBanner= () => {
   return (
     <div className="bg-neutral-50 pt-6">
       <Carousel 
-        className="w-full max-w-4xl mx-auto" 
+        className="w-full sm:max-w-4xl md:max-w-7xl mx-auto" 
         plugins={[
           Autoplay({
             delay: 6000

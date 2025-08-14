@@ -1,5 +1,6 @@
 import CarouselTextBanner from "@/components/carousel-text-banner";
 import Hero from "@/components/hero";
+import Advantages from "@/components/advantages";
 
 export default function Home() {
   return (
@@ -10,6 +11,9 @@ export default function Home() {
         </section>
         <section className="w-full mx-auto">
           <Hero />
+        </section>
+        <section>
+          <Advantages />
         </section>
       </main>
     </div>

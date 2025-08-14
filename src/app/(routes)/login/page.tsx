@@ -61,6 +61,24 @@ export default function LoginPage() {
         </button>
       </form>
 
+      <div className="relative my-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-300" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-white px-2 text-gray-500">o</span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => window.location.href = "/api/auth/login?connection=google-oauth2"}
+        className="w-full border border-gray-300 py-2 rounded flex items-center justify-center gap-2 hover:bg-gray-100"
+      >
+        <img src="/google-icon.svg" alt="Google" className="w-5 h-5" />
+        Ingresar con Google
+      </button>
+
       <div className="text-center text-sm mt-4">
         ¿Todavía no tenés cuenta?{" "}
         <Link href="/register" className="text-pink-600 font-medium hover:underline">
