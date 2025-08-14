@@ -1,6 +1,7 @@
 import CarouselTextBanner from "@/components/carousel-text-banner";
 import Hero from "@/components/hero";
 import Advantages from "@/components/advantages";
+import ContactSection from "@/components/contact";
 
 export default function Home() {
   return (
@@ -14,6 +15,9 @@ export default function Home() {
         </section>
         <section>
           <Advantages />
+        </section>
+        <section>
+          <ContactSection />
         </section>
       </main>
     </div>
