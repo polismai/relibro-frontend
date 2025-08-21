@@ -1,15 +1,23 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLogin } from "@/api/login";
 import Link from "next/link";
+import { validation } from "./validation";
+
+export type Errors = {
+  email?: string;
+  password?: string;
+};
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/";
 
   const [form, setForm] = useState({ email: "", password: "" });
+  const [errorsInput, setErrorsInput] = useState<Errors>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +25,10 @@ export default function LoginPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const updatedForm = { ...form, [name]: value };
+
+    setForm(updatedForm);
+    setErrorsInput(validation(updatedForm));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,6 +50,7 @@ export default function LoginPage() {
           className="w-full border border-gray-300 p-2 rounded"
           required
         />
+        {errorsInput.email && <p>{errorsInput.email}</p>}
 
         <input
           type="password"
@@ -49,6 +61,7 @@ export default function LoginPage() {
           className="w-full border border-gray-300 p-2 rounded"
           required
         />
+        {errorsInput.password && <p>{errorsInput.password}</p>}
 
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
