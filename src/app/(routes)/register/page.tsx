@@ -4,6 +4,14 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { registerUser } from '@/api/register'
+import { validation } from './validation'
+
+export type Errors = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+};
 
 export default function RegisterForm() {
   const router = useRouter()
@@ -14,19 +22,22 @@ export default function RegisterForm() {
     password: '',
   })
 
+  const [errors, setErrors] = useState<Errors>({});
+
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    const updatedForm = { ...form, [name]: value };
+    setForm(updatedForm);
+    setErrors(validation(updatedForm));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      console.log("esto estoy enviando", form)
       await registerUser(form)
       toast.success('Registro exitoso')
       router.push('/login') // redirige a login después del registro
@@ -50,6 +61,7 @@ export default function RegisterForm() {
         required
         className="w-full border px-3 py-2 rounded"
       />
+      {errors.firstName && <p>{errors.firstName}</p>}
 
       <input
         name="lastName"
@@ -60,6 +72,7 @@ export default function RegisterForm() {
         required
         className="w-full border px-3 py-2 rounded"
       />
+      {errors.lastName && <p>{errors.lastName}</p>}
 
       <input
         name="email"
@@ -70,6 +83,7 @@ export default function RegisterForm() {
         required
         className="w-full border px-3 py-2 rounded"
       />
+      {errors.email && <p>{errors.email}</p>}
 
       <input
         name="password"
@@ -80,6 +94,7 @@ export default function RegisterForm() {
         required
         className="w-full border px-3 py-2 rounded"
       />
+      {errors.password && <p>{errors.password}</p>}
 
       <button
         type="submit"
