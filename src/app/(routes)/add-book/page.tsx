@@ -8,6 +8,20 @@ import { useGetCategories } from "@/api/getCategories";
 import { useGetGenres } from "@/api/getGenres";
 import { useGetSchools } from "@/api/getSchools";
 import { useGetSchoolYears } from "@/api/getSchoolYears";
+import { validation } from "./validation";
+
+export type Errors = {
+    title?: string;
+    author?: string;
+    genre?: string;
+    school?: string;
+    subject?: string;
+    schoolYear?: string;
+    description?: string;
+    conditionNote?: string;
+    price?: string;
+    category?: string;
+}
 
 export default function AddBookPage() {
   const { categories } = useGetCategories();
@@ -27,15 +41,14 @@ export default function AddBookPage() {
     price: "",
     category: "",
   });
-
+  const [errors, setErrors] = useState<Errors>({});
   const [images, setImages] = useState<FileList | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const updatedForm = { ...form, [name]: value };
+    setForm(updatedForm);
+    setErrors(validation(updatedForm));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +95,7 @@ export default function AddBookPage() {
             <option key={cat.value} value={cat.value}>{cat.label}</option>
           ))}
         </select>
+        {errors.category && <p>{errors.category}</p>}
         
         <input
           name="title"
@@ -91,6 +105,7 @@ export default function AddBookPage() {
           className="w-full border border-gray-300 p-2 rounded"
           required
         />
+        {errors.title && <p>{errors.title}</p>}
           
         {form.category === "school" && (
           <>
@@ -142,6 +157,7 @@ export default function AddBookPage() {
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
             />
+            {errors.author && <p>{errors.author}</p>}
 
             <textarea
               name="description"
@@ -151,6 +167,7 @@ export default function AddBookPage() {
               className="w-full border border-gray-300 p-2 rounded resize-none"
               rows={4}
             />
+            {errors.description && <p>{errors.description}</p>}
 
             <select
               name="genre"
@@ -174,6 +191,7 @@ export default function AddBookPage() {
           className="w-full border border-gray-300 p-2 rounded resize-none"
           rows={4}
         />
+        {errors.conditionNote && <p>{errors.conditionNote}</p>}
 
         <input
           name="price"
@@ -185,6 +203,7 @@ export default function AddBookPage() {
           className="w-full border border-gray-300 p-2 rounded"
           required
         />
+        {errors.price && <p>{errors.price}</p>}
 
         <input
           type="file"
@@ -196,6 +215,7 @@ export default function AddBookPage() {
 
         <button
           type="submit"
+          disabled={Object.keys(errors).length > 0}
           className="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700 transition"
         >
           Cargar libro

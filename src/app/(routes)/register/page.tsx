@@ -23,7 +23,7 @@ export default function RegisterForm() {
   })
 
   const [errors, setErrors] = useState<Errors>({});
-
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,16 +35,19 @@ export default function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    setLoading(true);
+    setError("");
 
     try {
       await registerUser(form)
-      toast.success('Registro exitoso')
-      router.push('/login') // redirige a login después del registro
-    } catch (err: any) {
-      toast.error(err.message || 'Ocurrio un error')
+      toast.success('Registro exitoso');
+      router.push('/login');
+    } catch (err) {
+      const error = err as Error;
+      setError(error.message);
+      toast.error(error.message || 'Ocurrio un error');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -96,9 +99,11 @@ export default function RegisterForm() {
       />
       {errors.password && <p>{errors.password}</p>}
 
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || Object.keys(errors).length > 0}
         className="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700 disabled:opacity-50"
       >
         {loading ? 'Registrando...' : 'Registrarse'}

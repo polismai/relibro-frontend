@@ -67,7 +67,7 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || Object.keys(errorsInput).length > 0}
           className="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700 disabled:opacity-50"
         >
           {loading ? 'Ingresando...' : 'Ingresar'}

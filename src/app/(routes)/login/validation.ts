@@ -4,7 +4,7 @@ export const validation = (form: { email: string; password: string }) => {
   const errors: Errors = {};
 
   if (!form.email) {
-    errors.email = "El email es requerido";
+    errors.email = "Debe introducir el email";
   } else if (
     !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email)
   ) {
@@ -12,7 +12,7 @@ export const validation = (form: { email: string; password: string }) => {
   }
 
   if (!form.password) {
-    errors.password = "La contraseña es requerida";
+    errors.password = "Debe introducir la contraseña";
   } else if (form.password.length < 6) {
     errors.password = "La contraseña debe tener al menos 6 caracteres";
   }

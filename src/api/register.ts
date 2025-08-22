@@ -1,9 +1,11 @@
-export async function registerUser(data: {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-}) {
+export type RegisterData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export async function registerUser(data: RegisterData) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/register`, {
     method: 'POST',
     headers: {
@@ -15,8 +17,10 @@ export async function registerUser(data: {
   const result = await res.json();
   
   if (!res.ok) {
-    throw new Error(result.message || 'Error en el registro')
+    throw new Error(result?.message?.split("::")[1] || 'Error en el registro');
   }
 
   return result;
 }
+
+
