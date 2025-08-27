@@ -4,7 +4,9 @@ export async function createBook(form: CreateBookForm, images: FileList | null) 
   const formData = new FormData();
 
   Object.entries(form).forEach(([key, value]) => {
-    formData.append(key, value as string);
+    if (value !== "" && value !== null) {
+      formData.append(key, value as string);
+    }
   });
 
   if (images) {

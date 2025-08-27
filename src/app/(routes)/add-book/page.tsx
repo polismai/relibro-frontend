@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "../../../../context/AuthProvider";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createBook } from "@/api/createBook";
@@ -9,6 +10,7 @@ import { useGetGenres } from "@/api/getGenres";
 import { useGetSchools } from "@/api/getSchools";
 import { useGetSchoolYears } from "@/api/getSchoolYears";
 import { validation } from "./validation";
+import { updateContactPhone } from "@/api/updateContactPhone";
 
 export type Errors = {
     title?: string;
@@ -28,6 +30,7 @@ export default function AddBookPage() {
   const { genres } = useGetGenres();
   const { schools } = useGetSchools();
   const { schoolYears } = useGetSchoolYears();
+  const { user } = useAuth();
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
@@ -41,6 +44,9 @@ export default function AddBookPage() {
     price: "",
     category: "",
   });
+
+  const [contactPhone, setContactPhone] = useState(user?.contactPhone || "");
+  const needsPhone = !user?.contactPhone;
   const [errors, setErrors] = useState<Errors>({});
   const [images, setImages] = useState<FileList | null>(null);
 
@@ -61,8 +67,18 @@ export default function AddBookPage() {
     const toastId = toast.loading("Cargando libro...");
 
     try {
-      await createBook(form, images);
+      if (user && needsPhone && contactPhone.trim()) {
+        await updateContactPhone(user.id, contactPhone);
+      }
 
+
+      const payload = {
+        ...form,
+        school: form.school === "" ? null : form.school,
+        schoolYear: form.schoolYear === "" ? null : form.schoolYear,
+      };
+
+      await createBook(payload, images);
       toast.dismiss(toastId);
       toast.success("Libro cargado exitosamente", {
         description: "Ya está disponible en la tienda",
@@ -83,6 +99,7 @@ export default function AddBookPage() {
     <div className="max-w-3xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-6">Agregar nuevo libro</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
+        
         <select
           name="category"
           value={form.category}
@@ -204,6 +221,20 @@ export default function AddBookPage() {
           required
         />
         {errors.price && <p>{errors.price}</p>}
+
+        {needsPhone && (
+          <div className="mb-4 p-3 bg-gray-50 rounded border">
+            <label className="block mb-2 font-semibold">Número de contacto</label>
+            <input
+              type="text"
+              value={contactPhone}
+              onChange={(e) => setContactPhone(e.target.value)}
+              placeholder="Ej: +598 9 123 4567"
+              className="w-full border border-gray-300 p-2 rounded"
+              required
+            />
+          </div>
+        )}
 
         <input
           type="file"

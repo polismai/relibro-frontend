@@ -9,6 +9,7 @@ type User = {
   email: string;
   firstName: string;
   role: string;
+  contactPhone?: string;
 };
 
 type AuthContextType = {
@@ -22,6 +23,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+
+  console.log("esto es user", user);
 
   useEffect(() => {
     if (!user) {
