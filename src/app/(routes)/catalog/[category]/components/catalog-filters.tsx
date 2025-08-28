@@ -4,10 +4,6 @@ import { useState } from "react";
 import { FilterOptions } from "@/types/filters";
 import { GenreOption } from "@/types/genre";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 
 type FilterProps = {
   filters: FilterOptions;
@@ -19,23 +15,43 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const handleChange = (name: keyof FilterOptions, value: string | number | undefined) => {
-
     const updatedFilters = { ...filters, [name]: value };
     onFilterChange(updatedFilters);
   };
+
+  const handleClearFilters = () => {
+    onFilterChange({
+      genre: undefined,
+      school: undefined,
+      subject: undefined,
+      schoolYear: undefined,
+      minPrice: undefined,
+      maxPrice: undefined,
+      sortBy: undefined,
+    });
+  };
+
+  const hasFilters = !!(
+    filters.genre ||
+    filters.school ||
+    filters.subject ||
+    filters.schoolYear ||
+    filters.minPrice ||
+    filters.maxPrice ||
+    filters.sortBy
+  );
 
   return (
     <>
       {/* Botón solo visible en mobile */}
       <div className="sm:hidden mb-4 px-4">
-        <Button
+        <button
           onClick={() => setShowMobileFilters(!showMobileFilters)}
-          variant="default"
-          className="w-full flex justify-between "
+          className="w-full flex justify-between items-center px-4 py-2 rounded-md bg-blue-600 text-white font-medium hover:bg-blue-700 transition "
         >
           {showMobileFilters ? "Ocultar filtros" : "Mostrar filtros"}
           {showMobileFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </Button>
+        </button>
       </div>
 
       {/* Contenedor de filtros */}
@@ -50,25 +66,21 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
         {/* Género */}
         {filters.category === "story" && (
           <div className="flex flex-col gap-2">
-            <Label>Género</Label>
-            <Select
+            <label className="text-sm font-medium">Género</label>
+            <select
+              className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={filters.genre || "none"}
-              onValueChange={(value) => 
-                handleChange("genre", value === "none" ? undefined : value)
+              onChange={(e) =>
+                handleChange("genre", e.target.value === "none" ? undefined : e.target.value)
               }
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Todos los géneros" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">Todos los géneros</SelectItem>
-                {genres.map((genre) => (
-                  <SelectItem key={genre.value} value={genre.value}>
-                    {genre.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <option value="none">Todos los géneros</option>
+              {genres.map((genre) => (
+                <option key={genre.value} value={genre.value}>
+                  {genre.label}
+                </option>
+              ))}
+            </select>
           </div>
         )}
         
@@ -76,30 +88,33 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
         {filters.category === "school" && (
           <>
             <div className="flex flex-col gap-2">
-              <Label>Colegio</Label>
-              <Input
+              <label className="text-sm font-medium">Colegio</label>
+              <input
                 type="text"
                 placeholder="Ej: IUA"
+                className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={filters.school ?? ""}
                 onChange={(e) => handleChange("school", e.target.value || undefined)}
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label>Materia</Label>
-              <Input
+              <label className="text-sm font-medium">Materia</label>
+              <input
                 type="text"
                 placeholder="Ej: Matemática"
+                className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={filters.subject ?? ""}
                 onChange={(e) => handleChange("subject", e.target.value || undefined)}
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label>Año escolar</Label>
-              <Input
+              <label className="text-sm font-medium">Año escolar</label>
+              <input
                 type="text"
                 placeholder="Ej: 2° de liceo"
+                className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={filters.schoolYear ?? ""}
                 onChange={(e) => handleChange("schoolYear", e.target.value || undefined)}
               />
@@ -109,13 +124,14 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
 
         {/* Precio mínimo */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="minPrice">Precio mínimo</Label>
-          <Input
+          <label htmlFor="minPrice" className="text-sm font-medium">Precio mínimo</label>
+          <input
             type="number"
             id="minPrice"
             placeholder="Ej: 100"
+            className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={filters.minPrice ?? ""}
-            onChange={(e) => 
+            onChange={(e) =>
               handleChange("minPrice", e.target.value === "" ? undefined : parseInt(e.target.value))
             }
           />
@@ -123,13 +139,14 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
 
         {/* Precio máximo */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="maxPrice">Precio máximo</Label>
-          <Input
+          <label htmlFor="maxPrice" className="text-sm font-medium">Precio máximo</label>
+          <input
             type="number"
             id="maxPrice"
             placeholder="Ej: 1000"
+            className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={filters.maxPrice ?? ""}
-            onChange={(e) => 
+            onChange={(e) =>
               handleChange("maxPrice", e.target.value === "" ? undefined : parseInt(e.target.value))
             }
           />
@@ -137,25 +154,28 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
 
         {/* Ordenar por */}
         <div className="flex flex-col gap-2">
-          <Label>Ordenar por</Label>
-          <Select
+          <label className="text-sm font-medium">Ordenar por</label>
+          <select
+            className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={filters.sortBy || "none"}
-            onValueChange={(value) => 
-              handleChange("sortBy", value === "none" ? undefined : value)
-            }
+            onChange={(e) => handleChange("sortBy", e.target.value === "none" ? undefined : e.target.value)}
           >
-            <SelectTrigger>
-              <SelectValue placeholder="Sin orden" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">-</SelectItem>
-              <SelectItem value="price_asc">Precio: menor a mayor</SelectItem>
-              <SelectItem value="price_desc">Precio: mayor a menor</SelectItem>
-              <SelectItem value="title_asc">Título A-Z</SelectItem>
-              <SelectItem value="title_desc">Título Z-A</SelectItem>
-            </SelectContent>
-          </Select>
+            <option value="none">-</option>
+            <option value="price_asc">Precio: menor a mayor</option>
+            <option value="price_desc">Precio: mayor a menor</option>
+            <option value="title_asc">Título A-Z</option>
+            <option value="title_desc">Título Z-A</option>
+          </select>
         </div>
+
+        {hasFilters &&
+          <button
+            onClick={handleClearFilters}
+            className="mt-4 w-full px-4 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
+          >
+            Limpiar filtros
+          </button>
+        }
       </div>
     </>
   );

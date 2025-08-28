@@ -28,13 +28,6 @@ export const dataCarouselTop = [
     imageUrl: "/images/bosque.jpg",
     link: "#"
   },
-  {
-    id: 4,
-    title: "Comprar novedades",
-    description: "Todas las novedades al 50% de descuento",
-    imageUrl: "/images/novedades.jpg",
-    link: "#"
-  },
 ]
 
 export const CarouselTextBanner= () => {

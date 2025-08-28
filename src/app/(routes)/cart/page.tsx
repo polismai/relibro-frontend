@@ -6,29 +6,11 @@ import { formatPrice } from "@/lib/formatPrice";
 import { Button } from "@/components/ui/button";
 import CartItem from "./components/cart-item";
 
-// import { makePaymentRequest } from "@/api/payment";
-
 export default function Page() {
   const { items } = useCart();
 
   const prices = items.map((product) => product.price);
   const totalPrice = prices.reduce((total, price) => total + price, 0);
-
-  // const buyStripe = async () => {
-  //   console.log("ESTOS SON LOS ITEMS", items)
-  //   try {
-  //     const stripe = await stripePromise
-  //     const res = await makePaymentRequest.post("/api/orders", {
-  //       products: items
-  //     })
-  //     await stripe?.redirectToCheckout({
-  //       sessionId: res.data.stripeSession.id
-  //     })
-  //     removeAll()
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
   
   return (
     <div className="max-w-6xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
