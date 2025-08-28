@@ -25,8 +25,15 @@ const CartPage = () => {
         {items.map((product) => (
           <div
             key={product.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative"
           >
+            <button
+              className="absolute top-3 right-3 p-2 rounded-full bg-white shadow hover:bg-gray-100 transition flex items-center justify-center"
+              onClick={() => removeItem(product.id)}
+            >
+              <X size={18} />
+            </button>
+
             {/* Imagen */}
             <div className="w-full h-48 overflow-hidden">
               <img
@@ -43,16 +50,10 @@ const CartPage = () => {
                 <p className="text-green-600 font-semibold mt-1">{formatPrice(product.price)}</p>
               </div>
 
-              {/* Botones */}
-              <div className="mt-4 flex gap-2">
-                <button className="flex-1 px-3 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+              {/* Boton de contacto */}
+              <div className="mt-4">
+                <button className="w-full px-3 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
                   Contactar al vendedor
-                </button>
-                <button
-                  className="p-2 rounded-full border text-gray-700 hover:bg-gray-100 transition flex items-center justify-center"
-                  onClick={() => removeItem(product.id)}
-                >
-                  <X size={18} />
                 </button>
               </div>
             </div>

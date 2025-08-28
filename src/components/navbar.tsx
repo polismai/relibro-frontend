@@ -1,6 +1,6 @@
 "use client";
 
-import { BaggageClaim, ShoppingCart, User } from "lucide-react";
+import { Heart, User } from "lucide-react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation';
@@ -109,20 +109,24 @@ const Navbar = () => {
           )}
 
           {cart.items.length === 0 ? 
-           <ShoppingCart
+           <Heart
             strokeWidth="1"
             className="cursor-pointer hover:text-white transition-colors"
             onClick={() => router.push("/cart")}
-            aria-label="Ir al carrito"
+            aria-label="Ir a seleccionados"
           />
           : (
-            <div className="flex gap-1" onClick={() => router.push("/cart")}>
-              <BaggageClaim 
+            <div 
+              className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors"
+              onClick={() => router.push("/cart")}
+            >
+              <Heart
                 strokeWidth="1"
-                className="cursor-pointer hover:text-white transition-colors"
-                aria-label="Ir al carrito"
+                fill="currentColor"
+                className="w-6 h-6 text-red-500"
+                aria-label="Ir a seleccionados"
               />
-              <span>{cart.items.length}</span>
+              <span className="text-sm">{cart.items.length}</span>
             </div>
           )}
          
