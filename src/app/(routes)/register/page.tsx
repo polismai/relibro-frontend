@@ -5,12 +5,14 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { registerUser } from '@/api/register'
 import { validation } from './validation'
+import { Eye, EyeOff } from 'lucide-react'
 
 export type Errors = {
   firstName?: string;
   lastName?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
 };
 
 export default function RegisterForm() {
@@ -20,11 +22,14 @@ export default function RegisterForm() {
     lastName: '',
     email: '',
     password: '',
+    confirmPassword: '',
   })
 
   const [errors, setErrors] = useState<Errors>({});
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -64,7 +69,7 @@ export default function RegisterForm() {
         required
         className="w-full border px-3 py-2 rounded"
       />
-      {errors.firstName && <p>{errors.firstName}</p>}
+      {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
 
       <input
         name="lastName"
@@ -75,7 +80,7 @@ export default function RegisterForm() {
         required
         className="w-full border px-3 py-2 rounded"
       />
-      {errors.lastName && <p>{errors.lastName}</p>}
+      {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
 
       <input
         name="email"
@@ -86,18 +91,47 @@ export default function RegisterForm() {
         required
         className="w-full border px-3 py-2 rounded"
       />
-      {errors.email && <p>{errors.email}</p>}
+      {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
-      <input
+      <div className="relative">
+        <input
         name="password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         placeholder="Contraseña"
         value={form.password}
         onChange={handleChange}
         required
         className="w-full border px-3 py-2 rounded"
-      />
-      {errors.password && <p>{errors.password}</p>}
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+        >
+          {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+        </button>
+      </div>
+      {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+      
+      <div className="relative">
+        <input
+          name="confirmPassword"
+          type={showConfirmPassword ? "text" : "password"}
+          placeholder="Repetir contraseña"
+          value={form.confirmPassword}
+          onChange={handleChange}
+          required
+          className="w-full border px-3 py-2 rounded"
+        />
+        <button
+          type="button"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          className="absolute right-2 top-1/2 text-gray-500 -translate-y-1/2 hover:text-gray-700"
+        >
+          {showConfirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+        </button>
+      </div>
+      {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
 

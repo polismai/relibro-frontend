@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
-import { Card, CardContent } from "./ui/card";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -10,7 +9,7 @@ export const dataCarouselTop = [
   {
     id: 1,
     title: "VUELTA A CLASES",
-    description: "Libros usados en excelente estado y con descuentos imperdibles.",
+    description: "Libros usados en excelente estado y a precios increíbles.",
     imageUrl: "/images/colegio.jpg",
     link: "/catalog/school"
   },
@@ -34,7 +33,7 @@ export const CarouselTextBanner= () => {
   const router = useRouter();
 
   return (
-    <div className="bg-neutral-50 pt-6">
+    <div className="bg-neutral-50">
       <Carousel 
         className="w-full sm:max-w-4xl md:max-w-7xl mx-auto" 
         plugins={[
@@ -54,8 +53,8 @@ export const CarouselTextBanner= () => {
                 className="rounded-md brightness-75"
               />
               <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4">
-                <p className="text-lg sm:text-2xl font-semibold">{title}</p>
-                <p className="text-sm sm:text-base">{description}</p>
+                <p className="text-xl sm:text-2xl font-semibold">{title}</p>
+                <p className="text-lg sm:text-base">{description}</p>
               </div>
             </CarouselItem>
           ))}

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useLogin } from "@/api/login";
 import Link from "next/link";
 import { validation } from "./validation";
+import { Eye, EyeOff } from "lucide-react";
 
 export type Errors = {
   email?: string;
@@ -17,6 +18,7 @@ export default function LoginPage() {
   const redirectTo = searchParams.get("redirect") || "/";
 
   const [form, setForm] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [errorsInput, setErrorsInput] = useState<Errors>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,16 +53,25 @@ export default function LoginPage() {
           required
         />
         {errorsInput.email && <p>{errorsInput.email}</p>}
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={form.password}
-          onChange={handleChange}
-          className="w-full border border-gray-300 p-2 rounded"
-          required
-        />
+        <div className="relative w-full">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Contraseña"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-2 rounded pr-10"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+          </button>
+        </div>
+        
         {errorsInput.password && <p>{errorsInput.password}</p>}
 
         {error && <p className="text-red-500 text-sm">{error}</p>}

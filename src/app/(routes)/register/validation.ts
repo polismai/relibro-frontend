@@ -1,6 +1,6 @@
 import { Errors } from "./page";
 
-export const validation = (form: { firstName: string; lastName: string; email: string; password: string }) => {
+export const validation = (form: { firstName: string; lastName: string; email: string; password: string; confirmPassword: string; }) => {
   const errors: Errors = {};
 
   if (!form.firstName) {
@@ -27,6 +27,10 @@ export const validation = (form: { firstName: string; lastName: string; email: s
     errors.password = "Debe ingresar una contraseña";
   } else if (form.password.length < 6) {
     errors.password = "La contraseña debe tener al menos 6 caracteres";
+  }
+
+  if (form.confirmPassword !== form.password) {
+    errors.confirmPassword = "Las contraseñas no coinciden";
   }
 
   return errors;

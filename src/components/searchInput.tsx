@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 
 const SearchInput = () => {
@@ -34,28 +32,28 @@ const SearchInput = () => {
     <div className="pb-3">
       <form onSubmit={handleSubmit} className="flex items-center gap-2 w-full max-w-md">
         {(showInput || query.length > 0) && (
-          <Input
+          <input
             type="text"
             placeholder="Buscar libros..."
             value={query}
             onChange={handleChange}
-            className={`flex-1 transition-all duration-300 ${
+            className={`flex-1 border rounded-md px-3 py-2 text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               showInput ? "block" : "hidden"
             }`}
             autoFocus
           />
         )}
-        <Button 
-          type={showInput ? "submit" : "button"} 
-          variant="outline" 
-          size="icon" 
+
+        <button
+          type={showInput ? "submit" : "button"}
+          className="flex items-center justify-center border rounded-md px-3 py-2 text-sm hover:bg-gray-100 transition"
           aria-label="Buscar"
           onClick={() => {
             if (!showInput) setShowInput(true);
           }}
         >
           <Search className="h-4 w-4" />
-        </Button>
+        </button>
       </form>
     </div>
   );

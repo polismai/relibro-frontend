@@ -22,7 +22,10 @@ const { removeItem } = useCart();
           <h2 className="text-lg font-bold">{product.title}</h2>
           <p className="font-bold">{formatPrice(product.price)}</p>
         </div>
-        <div>
+        <div className="flex flex-col gap-6">
+          <button className="mt-4 w-full px-4 py-2 rounded-xl border shadow-md text-sm font-medium text-gray-700 hover:scale-110 transition">
+            Contactar al vendedor
+          </button>
           <button
             className={cn("rounded-full flex items-center justify-center bg-white border shadow-md p-1 hover:scale-110 transition")}
           >

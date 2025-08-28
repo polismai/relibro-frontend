@@ -1,50 +1,66 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Separator } from "@/components/ui/separator";
 import { useCart } from "../../../hooks/use-cart";
 import { formatPrice } from "@/lib/formatPrice";
-import { Button } from "@/components/ui/button";
-import CartItem from "./components/cart-item";
+import { X } from "lucide-react";
 
-export default function Page() {
-  const { items } = useCart();
+const CartPage = () => {
+  const { items, removeItem } = useCart();
 
-  const prices = items.map((product) => product.price);
-  const totalPrice = prices.reduce((total, price) => total + price, 0);
-  
+  if (items.length === 0) {
+    return (
+      <div className="max-w-3xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg text-center">
+        <h2 className="text-2xl font-bold mb-4">Tu lista de libros está vacía</h2>
+        <p className="text-gray-600">Agrega libros para contactar a los vendedores.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-6xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
-      <h1 className="mb-5 text-3xl font-bold">Carrito de compras</h1>
-      <div className="grid sm:grid-cols-2 sm:gap-5">
-        <div>
-          {items.length === 0 && (
-            <p>No hay productos en el carrito</p>
-          )}
-          <ul>
-            {items.map((item) => (
-              <CartItem key={item.id} product = {item} />
-            ))}
-          </ul>
-        </div>
-        <div className="max-w-xl">
-          <div className="p-6 rounded-lg bg-stone-200">
-            <p className="mb-3 text-lg font-semibold">Tu pedido</p>
-            <Separator />
-            <div className="flex justify-between gap-5 my-4">
-              <p>Total</p>
-              <p>{formatPrice(totalPrice)}</p>
+    <div className="max-w-6xl mx-auto mt-8 px-4">
+      <h1 className="text-3xl font-bold mb-6">Tus libros guardados</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {items.map((product) => (
+          <div
+            key={product.id}
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+          >
+            {/* Imagen */}
+            <div className="w-full h-48 overflow-hidden">
+              <img
+                src={product.images[0]?.url || "/placeholder.jpg"}
+                alt={product.title}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex items-center justify-center w-full mt-3">
-              <Button 
-                className="w-full"
-                onClick={() => console.log("A pagar")}
-              >
-                Comprar
-              </Button>
+
+            {/* Info del libro */}
+            <div className="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <h2 className="text-lg font-bold">{product.title}</h2>
+                <p className="text-green-600 font-semibold mt-1">{formatPrice(product.price)}</p>
+              </div>
+
+              {/* Botones */}
+              <div className="mt-4 flex gap-2">
+                <button className="flex-1 px-3 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+                  Contactar al vendedor
+                </button>
+                <button
+                  className="p-2 rounded-full border text-gray-700 hover:bg-gray-100 transition flex items-center justify-center"
+                  onClick={() => removeItem(product.id)}
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
-}
+};
+
+export default CartPage;
