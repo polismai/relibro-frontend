@@ -37,18 +37,12 @@ const Navbar = () => {
 
   return (
     <div className="bg-stone-300 w-full relative z-50">
-      <div className="flex items-center justify-between p-4 mx-auto cursor-pointer sm:max-w-4xl md:max-w-7xl">
+      <div className="flex items-center gap-4 justify-between p-4 mx-auto cursor-pointer sm:max-w-4xl md:max-w-7xl">
         <div className="flex items-center gap-6">
           <h1 className="text-3xl" onClick={() => router.push("/")}>
             Re<span className="font-bold">Libro</span>
           </h1>
-          {/* Botón menú hamburguesa (solo en mobile) */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-2xl focus:outline-none"
-          >
-            {isOpen ? <FiX /> : <FiMenu />}
-          </button>
+          
 
           <ul className="hidden md:flex items-center text-sm font-medium">
             {dataNavbar.map((data) => (
@@ -67,47 +61,55 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {isOpen && (
-          <ul className="md:hidden absolute top-full left-0 w-full shadow-lg px-4 py-3 flex flex-col gap-3 text-lg font-medium border-t border-gray-200 bg-white">
-            {dataNavbar.map((data) => (
-              <li key={data.id}>
-                <Link
-                  href={data.link}
-                  onClick={() => setIsOpen(false)} // Cierra el menú al hacer click
-                  className={`block py-2 hover:underline ${
-                    pathname === data.link ? "font-bold underline" : ""
-                  }`}
-                  aria-current={pathname === data.link ? "page" : undefined}
-                >
-                  {data.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      
         <div className="flex items-center gap-2 sm:gap-7">
-          
-          <User
-            strokeWidth="1"
-            className="cursor-pointer hover:text-white transition-colors"
-            aria-label="Perfil del usuario"
-            onClick={() => {
-              if (!user) {
-                toast.info("Tenés que iniciar sesión para ver tu perfil.");
-                router.push("/login?redirect=/profile");
-              } else {
-                router.push("/profile");
-              }
-            }}
-          />
-
-          {user && (
-            <span className="text-sm">
-              Hola, {user.firstName}
-            </span>
+          {/* Botón menú hamburguesa (solo en mobile) */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-2xl focus:outline-none"
+          >
+            {isOpen ? <FiX /> : <FiMenu />}
+          </button>
+          {isOpen && (
+            <ul className="md:hidden absolute top-full left-0 w-full shadow-lg px-4 py-3 flex flex-col gap-3 text-lg font-medium border-t border-gray-200 bg-white">
+              {dataNavbar.map((data) => (
+                <li key={data.id}>
+                  <Link
+                    href={data.link}
+                    onClick={() => setIsOpen(false)} // Cierra el menú al hacer click
+                    className={`block py-2 hover:underline ${
+                      pathname === data.link ? "font-bold underline" : ""
+                    }`}
+                    aria-current={pathname === data.link ? "page" : undefined}
+                  >
+                    {data.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           )}
 
+          <div className="flex gap-1 items-center justify-center">
+            <User
+              strokeWidth="1"
+              className="cursor-pointer hover:text-white transition-colors"
+              aria-label="Perfil del usuario"
+              onClick={() => {
+                if (!user) {
+                  toast.info("Tenés que iniciar sesión para ver tu perfil.");
+                  router.push("/login?redirect=/profile");
+                } else {
+                  router.push("/profile");
+                }
+              }}
+            />
+
+            {user && (
+              <span className="text-sm md:ml-1 text-center">
+                Hola {user.firstName}
+              </span>
+            )}
+          </div>
+          
           {cart.items.length === 0 ? 
            <Heart
             strokeWidth="1"

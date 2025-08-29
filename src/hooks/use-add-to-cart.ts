@@ -13,14 +13,14 @@ export function useAddToCart() {
 
   const handleAddToCart = (book: BookType) => {
     if (!user) {
-      toast.info("Tenés que iniciar sesión para agregar libros al carrito.");
+      toast.info("Tenés que iniciar sesión para agregar libros a la lista.");
       router.push(`/login?redirect=/book/${book.id}`);
       return;
     }
 
     addItem(book);
     
-    toast.success("Libro agregado al carrito");
+    toast.success("Libro agregado a la lista");
   };
 
   return { handleAddToCart };

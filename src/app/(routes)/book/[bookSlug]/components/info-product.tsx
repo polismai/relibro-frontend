@@ -4,7 +4,6 @@ import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { formatPrice } from "@/lib/formatPrice";
 import { GENRE_LABELS } from "@/types/genre";
 import { BookType } from "@/types/product";
-import { Heart } from "lucide-react";
 
 // import { useCart } from "../../../../../../hooks/use-cart";
 // import { useLovedProducts } from "../../../../../../hooks/use-loved-products";
@@ -30,9 +29,12 @@ const { handleAddToCart } = useAddToCart();
           </p>
         </div>
       </div>
-      <Separator className="my-4" />
+      
       {product.description && (
-        <p>{product.description}</p>
+        <>
+          <Separator className="my-4" />
+          <p>{product.description}</p>
+        </>
       )}
 
       {product.conditionNote && (
@@ -44,17 +46,9 @@ const { handleAddToCart } = useAddToCart();
 
       <Separator className="my-4" />
       <p className="my-4 text-2xl">{formatPrice(product.price)}</p>
-      <div className="flex items-center gap-5">
-        <Button className="w-full" onClick={() => handleAddToCart(product)} >
-          Me interesa
-        </Button>
-        <Heart 
-          width={30} 
-          strokeWidth={1} 
-          className="transition duration-300 cursor-pointer hover:fill-black" 
-          onClick={() => console.log("agregar a favoritos")}
-        />
-      </div>
+      <Button className="w-full" onClick={() => handleAddToCart(product)} >
+        Me interesa
+      </Button>
     </div>
   );
 }
