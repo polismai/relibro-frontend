@@ -43,7 +43,6 @@ const Navbar = () => {
             Re<span className="font-bold">Libro</span>
           </h1>
           
-
           <ul className="hidden md:flex items-center text-sm font-medium">
             {dataNavbar.map((data) => (
               <li key={data.id}>
