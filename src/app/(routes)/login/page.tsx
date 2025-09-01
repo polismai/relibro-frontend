@@ -7,6 +7,9 @@ import { useLogin } from "@/api/login";
 import Link from "next/link";
 import { validation } from "./validation";
 import { Eye, EyeOff } from "lucide-react";
+import { RiGoogleFill } from "react-icons/ri";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "@/lib/firebaseConfig";
 
 export type Errors = {
   email?: string;
@@ -36,6 +39,32 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await loginHandler(form, redirectTo, setError, setLoading);
+  };
+
+  const loginWithGoogle= async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      return {
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      };
+    } catch (error) {
+      console.error("Google login error", error);
+      throw error;
+    }
+  }
+
+  const handleGoogleLogin = async () => {
+    try {
+      const user = await loginWithGoogle();
+      console.log("✅ Logged in:", user);
+      // acá podrías mandarlo a tu backend si querés vincularlo con tu sistema
+    } catch (err) {
+      console.error("❌ Error in Google login", err);
+    }
   };
 
   return (
@@ -96,10 +125,11 @@ export default function LoginPage() {
 
       <button
         type="button"
-        onClick={() => window.location.href = "/api/auth/login?connection=google-oauth2"}
+        onClick={handleGoogleLogin}
         className="w-full border border-gray-300 py-2 rounded flex items-center justify-center gap-2 hover:bg-gray-100"
       >
-        <img src="/google-icon.svg" alt="Google" className="w-5 h-5" />
+        {/* <img src="/google-icon.svg" alt="Google" className="w-5 h-5" /> */}
+        <RiGoogleFill />
         Ingresar con Google
       </button>
 
