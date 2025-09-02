@@ -20,17 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={quicksand.className}>
-        <body className="min-h-screen flex flex-col">
-          <AuthProvider>
-            <header className="w-full">
-              <Navbar />
-            </header>
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Toaster richColors/>
-            <Footer />
-          </AuthProvider>
+      <body className="min-h-screen flex flex-col">
+        <AuthProvider>
+          <header className="w-full">
+            <Navbar />
+          </header>
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Toaster richColors/>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

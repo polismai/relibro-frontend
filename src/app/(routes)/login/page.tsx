@@ -61,7 +61,19 @@ export default function LoginPage() {
     try {
       const user = await loginWithGoogle();
       console.log("✅ Logged in:", user);
-      // acá podrías mandarlo a tu backend si querés vincularlo con tu sistema
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email }),
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message.split("::")[1] || "User not registered");
+      }
     } catch (err) {
       console.error("❌ Error in Google login", err);
     }
@@ -128,7 +140,6 @@ export default function LoginPage() {
         onClick={handleGoogleLogin}
         className="w-full border border-gray-300 py-2 rounded flex items-center justify-center gap-2 hover:bg-gray-100"
       >
-        {/* <img src="/google-icon.svg" alt="Google" className="w-5 h-5" /> */}
         <RiGoogleFill />
         Ingresar con Google
       </button>
