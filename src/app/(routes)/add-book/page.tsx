@@ -12,6 +12,8 @@ import { useGetSchoolYears } from "@/api/getSchoolYears";
 import { validation } from "./validation";
 import { updateContactPhone } from "@/api/updateContactPhone";
 import { useCheckout } from "@/api/checkout";
+import { useGetDepartments } from "@/api/getDepartments";
+import { updateDepartment } from "@/api/updateDepartment";
 
 export type Errors = {
     title?: string;
@@ -29,6 +31,7 @@ export type Errors = {
 export default function AddBookPage() {
   const { categories } = useGetCategories();
   const { genres } = useGetGenres();
+  const { departments } = useGetDepartments();
   const { schools } = useGetSchools();
   const { schoolYears } = useGetSchoolYears();
   const { user } = useAuth();
@@ -48,6 +51,8 @@ export default function AddBookPage() {
 
   const { handleCheckout, loading } = useCheckout();
   const [contactPhone, setContactPhone] = useState(user?.contactPhone || "");
+  const [department, setDepartment] = useState(user?.department || "");
+  const needsDepartment = !user?.department;
   const needsPhone = !user?.contactPhone;
   const [errors, setErrors] = useState<Errors>({});
   const [images, setImages] = useState<FileList | null>(null);
@@ -71,6 +76,10 @@ export default function AddBookPage() {
     try {
       if (user && needsPhone && contactPhone.trim()) {
         await updateContactPhone(user.id, contactPhone);
+      }
+
+      if (user && needsDepartment) {
+        await updateDepartment(user.id, department);
       }
 
       const payload = {
@@ -222,6 +231,25 @@ export default function AddBookPage() {
           required
         />
         {errors.price && <p>{errors.price}</p>}
+
+        {needsDepartment && (
+          <div className="mb-4">
+            <label className="block mb-2 font-semibold">Departamento</label>
+            <select
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="w-full border border-gray-300 p-2 rounded"
+              required
+            >
+              <option value="">Seleccionar departamento</option>
+              {departments.map((d) => (
+                <option key={d.id}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {needsPhone && (
           <div className="mb-4 p-3 bg-gray-50 rounded border">

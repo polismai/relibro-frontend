@@ -3,14 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
-
-type User = {
-  id: string;
-  email: string;
-  firstName: string;
-  role: string;
-  contactPhone?: string;
-};
+import { User } from '@/types/user';
 
 type AuthContextType = {
   user: User | null;
