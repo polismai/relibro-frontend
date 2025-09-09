@@ -11,6 +11,7 @@ import { useGetSchools } from "@/api/getSchools";
 import { useGetSchoolYears } from "@/api/getSchoolYears";
 import { validation } from "./validation";
 import { updateContactPhone } from "@/api/updateContactPhone";
+import { useCheckout } from "@/api/checkout";
 
 export type Errors = {
     title?: string;
@@ -45,6 +46,7 @@ export default function AddBookPage() {
     category: "",
   });
 
+  const { handleCheckout, loading } = useCheckout();
   const [contactPhone, setContactPhone] = useState(user?.contactPhone || "");
   const needsPhone = !user?.contactPhone;
   const [errors, setErrors] = useState<Errors>({});
@@ -70,7 +72,6 @@ export default function AddBookPage() {
       if (user && needsPhone && contactPhone.trim()) {
         await updateContactPhone(user.id, contactPhone);
       }
-
 
       const payload = {
         ...form,
@@ -250,6 +251,13 @@ export default function AddBookPage() {
           className="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700 transition"
         >
           Cargar libro
+        </button>
+        <button
+          onClick={() => handleCheckout({ userId: user?.id})}
+          disabled={loading}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          {loading ? "Redirigiendo..." : "Pagar con Mercado Pago"}
         </button>
       </form>
     </div>
