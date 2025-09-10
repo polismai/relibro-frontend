@@ -11,14 +11,21 @@ import { useEffect, useState } from "react";
 import { useGetGenres } from "@/api/getGenres";
 import { FilterOptions } from "@/types/filters";
 import SearchInput from "@/components/searchInput";
+import { useGetDepartments } from "@/api/getDepartments";
+import { useGetSchools } from "@/api/getSchools";
+import { useGetSchoolYears } from "@/api/getSchoolYears";
 
 export default function CatalogPageByCategory() {
   const { category } = useParams();
+  const { schools } = useGetSchools();
+  const { schoolYears } = useGetSchoolYears();
   const searchParams = useSearchParams();
   const { genres } = useGetGenres();
+  const { departments } = useGetDepartments();
 
   const [filters, setFilters] = useState<FilterOptions>({
     category: category as string,
+    department: "",
     onlyAvailable: true,
     genre: "",
     schoolYear: "",
@@ -66,7 +73,7 @@ export default function CatalogPageByCategory() {
       <Separator />
 
       <div className="sm:flex sm:gap-4 mt-8">
-        <CatalogFilters filters={filters} genres={genres} onFilterChange={handleFilterChange} />
+        <CatalogFilters filters={filters} genres={genres} departments={departments} schools={schools} schoolYears={schoolYears} onFilterChange={handleFilterChange} />
 
         <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-10">
           {loading && (

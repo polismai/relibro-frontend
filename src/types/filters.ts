@@ -1,5 +1,6 @@
 export type FilterOptions = {
   category: string;
+  department: string;
   onlyAvailable: boolean;
   subject: string;
   schoolYear: string;

@@ -4,14 +4,19 @@ import { useState } from "react";
 import { FilterOptions } from "@/types/filters";
 import { GenreOption } from "@/types/genre";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { School } from "@/types/school";
+import { SchoolYear } from "@/types/schoolYear";
 
 type FilterProps = {
   filters: FilterOptions;
+  departments: string[];
+  schools: School[];
+  schoolYears: SchoolYear[];
   genres: GenreOption[];
   onFilterChange: (filters: Partial<FilterOptions>) => void;
 };
 
-const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
+const CatalogFilters = ({ departments, filters, genres, schools, schoolYears, onFilterChange }: FilterProps) => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const handleChange = (name: keyof FilterOptions, value: string | number | undefined) => {
@@ -22,6 +27,7 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
   const handleClearFilters = () => {
     onFilterChange({
       genre: undefined,
+      department: undefined,
       school: undefined,
       subject: undefined,
       schoolYear: undefined,
@@ -33,6 +39,7 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
 
   const hasFilters = !!(
     filters.genre ||
+    filters.department ||
     filters.school ||
     filters.subject ||
     filters.schoolYear ||
@@ -63,6 +70,24 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
       >
         <h2 className="text-lg font-semibold">Filtrar por</h2>
 
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium">Departamento</label>
+          <select
+            className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={filters.department || "none"}
+            onChange={(e) =>
+              handleChange("department", e.target.value === "none" ? undefined : e.target.value)
+            }
+          >
+          <option value="none">-</option>
+            {departments.map((department) => (
+              <option key={department.id} value={department}>
+                {department}
+              </option>
+            ))}
+          </select>
+        </div>
+        
         {/* Género */}
         {filters.category === "story" && (
           <div className="flex flex-col gap-2">
@@ -89,13 +114,20 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
           <>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Colegio</label>
-              <input
-                type="text"
-                placeholder="Ej: IUA"
+              <select
                 className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={filters.school ?? ""}
-                onChange={(e) => handleChange("school", e.target.value || undefined)}
-              />
+                value={filters.school || "none"}
+                onChange={(e) =>
+                handleChange("school", e.target.value === "none" ? undefined : e.target.value)
+                }
+              >
+              <option value="none">-</option>
+                {schools.map((school) => (
+                  <option key={school.id} value={school.name}>
+                    {school.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -111,16 +143,37 @@ const CatalogFilters = ({ filters, genres, onFilterChange }: FilterProps) => {
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Año escolar</label>
-              <input
-                type="text"
-                placeholder="Ej: 2° de liceo"
+              <select
                 className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={filters.schoolYear ?? ""}
-                onChange={(e) => handleChange("schoolYear", e.target.value || undefined)}
-              />
+                value={filters.schoolYear || "none"}
+                onChange={(e) =>
+                handleChange("schoolYear", e.target.value === "none" ? undefined : e.target.value)
+                }
+              >
+              <option value="none">-</option>
+                {schoolYears.map((schoolYear) => (
+                  <option key={schoolYear.id} value={schoolYear.name}>
+                    {schoolYear.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </>
         )}
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="minPrice" className="text-sm font-medium">Precio mínimo</label>
+          <input
+            type="number"
+            id="minPrice"
+            placeholder="Ej: 100"
+            className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={filters.minPrice ?? ""}
+            onChange={(e) =>
+              handleChange("minPrice", e.target.value === "" ? undefined : parseInt(e.target.value))
+            }
+          />
+        </div>
 
         {/* Precio mínimo */}
         <div className="flex flex-col gap-2">
