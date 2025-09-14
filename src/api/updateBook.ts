@@ -1,7 +1,7 @@
 import { BookType } from "@/types/product";
 
 export async function updateBook(id: string, data: Partial<BookType>) {
-  const res = await fetch(`http://localhost:3001/api/books/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/books/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
