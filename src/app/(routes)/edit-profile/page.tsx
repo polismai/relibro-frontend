@@ -11,7 +11,7 @@ import { getUser } from "@/api/getUser";
 export default function EditProfilePage() {
   const router = useRouter();
   const { departments } = useGetDepartments();
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -44,8 +44,8 @@ export default function EditProfilePage() {
       e.preventDefault();
 
       try {
-        // Enviamos la actualización al backend
-        await updateProfile(user.id, form);
+        const updatedUser = await updateProfile(user.id, form);
+        updateUser(updatedUser);
         toast.success("Perfil actualizado correctamente");
         router.push("/profile");
       } catch (err) {

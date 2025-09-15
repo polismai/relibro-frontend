@@ -9,6 +9,7 @@ type AuthContextType = {
   user: User | null;
   login: (user: User) => void;
   logout: () => void;
+  updateUser: (updatedData: Partial<User>) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,8 +17,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-
-  console.log("esto es user", user);
 
   useEffect(() => {
     if (!user) {
@@ -57,8 +56,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateUser = (updatedData: Partial<User>) => {
+    if (user) {
+      setUser({ ...user, ...updatedData });
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, updateUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
