@@ -42,14 +42,18 @@ export default function EditProfilePage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+      const toastId = toast.loading("Actualizando perfil...");
 
       try {
         const updatedUser = await updateProfile(user.id, form);
         updateUser(updatedUser);
+
+        toast.dismiss(toastId);
         toast.success("Perfil actualizado correctamente");
         router.push("/profile");
       } catch (err) {
         console.error(err);
+        toast.dismiss(toastId);
         toast.error("Error al actualizar el perfil");
       }
     };

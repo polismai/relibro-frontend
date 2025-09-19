@@ -19,9 +19,9 @@ export type Errors = {
     title?: string;
     author?: string;
     genre?: string;
-    school?: string;
+    schoolId?: string;
     subject?: string;
-    schoolYear?: string;
+    schoolYearId?: string;
     description?: string;
     conditionNote?: string;
     price?: string;
@@ -40,9 +40,9 @@ export default function AddBookPage() {
     title: "",
     author: "",
     genre: "",
-    school: "",
+    schoolId: "",
     subject: "",
-    schoolYear: "",
+    schoolYearId: "",
     description: "",
     conditionNote: "",
     price: "",
@@ -84,8 +84,8 @@ export default function AddBookPage() {
 
       const payload = {
         ...form,
-        school: form.school === "" ? null : form.school,
-        schoolYear: form.schoolYear === "" ? null : form.schoolYear,
+        schoolId: form.schoolId === "" ? null : form.schoolId,
+        schoolYearId: form.schoolYearId === "" ? null : form.schoolYearId,
       };
 
       await createBook(payload, images);
@@ -146,8 +146,8 @@ export default function AddBookPage() {
              />
 
             <select
-              name="schoolYear"
-              value={form.schoolYear}
+              name="schoolYearId"
+              value={form.schoolYearId}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
              >
@@ -160,8 +160,8 @@ export default function AddBookPage() {
             </select>
 
             <select
-              name="school"
-              value={form.school}
+              name="schoolId"
+              value={form.schoolId}
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
              >

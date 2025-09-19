@@ -23,11 +23,14 @@ const { handleAddToCart } = useAddToCart();
     <div className="px-6">
       <div className="justify-between mb-3 sm:flex">
         <h1 className="text-2xl">{product.title}</h1>
-        <div className="flex items-center justify-between gap-3">
-          <p className="px-2 py-1 text-xs text-white bg-black rounded-full w-fit">
-            {GENRE_LABELS[product.genre as string]}
-          </p>
-        </div>
+
+        {product.genre && (
+          <div className="flex items-center justify-between gap-3">
+            <p className="px-2 py-1 text-xs text-white bg-black rounded-full w-fit">
+              {GENRE_LABELS[product.genre as string]}
+            </p>
+          </div>
+        )}
       </div>
       
       {product.description && (

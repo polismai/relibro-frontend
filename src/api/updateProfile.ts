@@ -10,11 +10,11 @@ export async function updateProfile(userId: string, data: Partial<User>) {
     body: JSON.stringify(data),
   });
 
-  const updatedUser = await res.json();
+  const result = await res.json();
 
   if (!res.ok) {
-    throw new Error(updatedUser.message.split("::")[1] || "Error al actualizar el perfil");
+    throw new Error(result.message?.split("::")[1] || "Error al actualizar el perfil");
   }
 
-  return updatedUser;
+  return result;
 }
