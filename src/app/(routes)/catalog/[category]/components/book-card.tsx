@@ -41,13 +41,15 @@ export const BookCard = ({ book }: BookCardProps) => {
   const mainImage = book.images[0]?.url || "/placeholder.jpg"; 
 
   return (
-    <div className="relative flex flex-col justify-between h-[400px] transition-all duration-100 rounded-lg hover:shadow-md bg-white">
+    <div className="relative flex flex-col justify-start gap-y-2 h-[350px] transition-all duration-100 rounded-lg hover:shadow-md bg-white">
       
       {/* Badge */}
       <div className="absolute flex items-center justify-between gap-3 px-2 z-[1] top-4 w-full">
-        <p className="px-2 py-1 text-xs text-white bg-black rounded-full w-fit">
-          {GENRE_LABELS[book.genre as string]}
-        </p>
+        {book.genre && (
+          <p className="px-2 py-1 text-xs text-white bg-black rounded-full w-fit">
+            {GENRE_LABELS[book.genre as string]}
+          </p>
+        )}
       </div>
 
       {/* Image */}
