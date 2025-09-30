@@ -1,3 +1,6 @@
+import { School } from "./school";
+import { SchoolYear } from "./schoolYear";
+
 export type BookImageType = {
   id: string;
   url: string;
@@ -15,9 +18,9 @@ export type BookType = {
   id: string;
   title: string;
   author?: string;
-  school?: string;
+  school?: School;
   subject?: string;
-  schoolYear?: string;
+  schoolYear?: SchoolYear;
   genre?: string;
   description?: string;
   conditionNote?: string;

@@ -5,13 +5,15 @@ export async function getUser(userId: string) {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    cache: "no-store", // opcional: evita cache en SSR/ISR
+    cache: "no-store", 
   });
 
-  if (!res.ok) {
-    throw new Error("Error fetching user");
-  }
+   const result =  await res.json();
 
-  const result =  await res.json();
+  if (!res.ok) {
+    const msg = result?.message?.split("::")[1] || "Error al traer el usuario";
+    throw new Error(msg);
+  }
+ 
   return result;
 }

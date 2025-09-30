@@ -59,9 +59,6 @@ export default function CatalogPageByCategory() {
 
   return (
     <div className="max-w-7xl p-4 mx-auto sm:py-16 sm:px-24">
-      {error && (
-        <p className="mb-4 text-red-500 text-center">{error}</p>
-      )}
 
       {!loading && books !== null && (
         <div className="flex items-center w-full justify-between">
@@ -79,6 +76,10 @@ export default function CatalogPageByCategory() {
           {loading && (
             <SkeletonSchema grid={3} />
           )}
+          {error && (
+            <p className="mb-4 text-red-500 text-center">{error}</p>
+          )}
+          
           {!loading && books && books.length > 0 && (
             books.map((book) => <BookCard key={book.id} book={book} />)
           )}

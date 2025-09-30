@@ -33,15 +33,16 @@ export default function EditBookPage() {
     category: null,
   });
 
+  console.log("esto es result", result)
   useEffect(() => {
     if (result) {
       setForm({
         title: result.title || "",
         author: result.author || "",
         genre: result.genre || "",
-        school: result.school || "",
+        school: result.school?.id || "",
         subject: result.subject || "",
-        schoolYear: result.schoolYear || "",
+        schoolYear: result.schoolYear?.id || "",
         description: result.description || "",
         conditionNote: result.conditionNote || "",
         price: result.price ? result.price.toString() : "",
@@ -119,8 +120,8 @@ export default function EditBookPage() {
              >
               <option value="">Seleccioná el año escolar</option>
               {schoolYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
+                <option key={year.id} value={year.id}>
+                  {year.name}
                 </option>
               ))}
             </select>
@@ -133,8 +134,8 @@ export default function EditBookPage() {
             >
               <option value="">Seleccioná un colegio</option>
                 {schools.map((school) => (
-                  <option key={school} value={school}>
-                    {school}
+                  <option key={school.id} value={school.id}>
+                    {school.name}
                   </option>
                 ))}
             </select>
@@ -166,7 +167,7 @@ export default function EditBookPage() {
               onChange={handleChange}
               className="w-full border border-gray-300 p-2 rounded"
             >
-              <option value="">Seleccionar género</option>
+              <option value="" disabled>Seleccioná un género</option>
                 {genres.map((g) => (
                   <option key={g.value} value={g.value}>{g.label}</option>
                 ))}

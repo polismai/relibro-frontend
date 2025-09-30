@@ -4,8 +4,10 @@
 import { useCart } from "../../../hooks/use-cart";
 import { formatPrice } from "@/lib/formatPrice";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
+  const router = useRouter();
   const { items, removeItem } = useCart();
 
   if (items.length === 0) {
@@ -52,7 +54,10 @@ const CartPage = () => {
 
               {/* Boton de contacto */}
               <div className="mt-4">
-                <button className="w-full px-3 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+                <button 
+                  className="w-full px-3 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
+                  onClick={() => router.push(`/book/${product.id}/contact`)}
+                >
                   Contactar al vendedor
                 </button>
               </div>

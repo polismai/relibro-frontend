@@ -21,7 +21,7 @@
 
 // export default BookCard;
 
-import { Expand, ShoppingCart } from "lucide-react";
+import { Expand, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { formatPrice } from "@/lib/formatPrice";
@@ -67,7 +67,7 @@ export const BookCard = ({ book }: BookCardProps) => {
             />
             <IconButton
               onClick={() => handleAddToCart(book)}
-              icon={<ShoppingCart size={20} className="text-gray-600" />}
+              icon={<Heart size={20} className="text-gray-600" />}
             />
           </div>
         </div>

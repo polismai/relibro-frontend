@@ -123,7 +123,7 @@ const CatalogFilters = ({ departments, filters, genres, schools, schoolYears, on
               >
               <option value="none">-</option>
                 {schools.map((school) => (
-                  <option key={school.id} value={school.name}>
+                  <option key={school.id} value={school.id}>
                     {school.name}
                   </option>
                 ))}

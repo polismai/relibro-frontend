@@ -1,9 +1,12 @@
+"use client";
+
 import { BookType } from "@/types/product";
 import { useCart } from "../../../../hooks/use-cart";
 import { formatPrice } from "@/lib/formatPrice";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import BookImage from "@/components/book-image";
+import { useRouter } from "next/navigation";
 
 interface CartItemProps {
   product: BookType;
@@ -11,8 +14,8 @@ interface CartItemProps {
 
 const CartItem = (props: CartItemProps) => {
 const { product } = props;
+const router = useRouter();
 const { removeItem } = useCart();
-
 
   return (
     <li className="flex py-6 border-b">
@@ -23,7 +26,14 @@ const { removeItem } = useCart();
           <p className="font-bold">{formatPrice(product.price)}</p>
         </div>
         <div className="flex flex-col gap-6">
-          <button className="mt-4 w-full px-4 py-2 rounded-xl border shadow-md text-sm font-medium text-gray-700 hover:scale-110 transition">
+          <button 
+            type="button"
+            className="mt-4 w-full px-4 py-2 rounded-xl border shadow-md text-sm font-medium text-gray-700 hover:scale-110 transition"
+            onClick={() => {
+              router.push(`/book/${product.id}/contact`)
+              console.log("clickeando")
+            }}
+          >
             Contactar al vendedor
           </button>
           <button
