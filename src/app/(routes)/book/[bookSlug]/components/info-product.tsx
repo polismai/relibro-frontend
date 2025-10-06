@@ -1,24 +1,29 @@
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useAddToCart } from "@/hooks/use-add-to-cart";
 import { formatPrice } from "@/lib/formatPrice";
 import { GENRE_LABELS } from "@/types/genre";
 import { BookType } from "@/types/product";
-
-// import { useCart } from "../../../../../../hooks/use-cart";
-// import { useLovedProducts } from "../../../../../../hooks/use-loved-products";
+import { useAuth } from "../../../../../../context/AuthProvider";
+import { useAddBookOfInterest } from "@/api/addBookOfInterest";
 
 export type InfoProductProps = {
   product: BookType
 }
 
 const InfoProduct = (props: InfoProductProps) => {
-const { product } = props;
-const { handleAddToCart } = useAddToCart();
+  const { product } = props;
+  const { user } = useAuth();
+  const { addBookOfInterest, loading } = useAddBookOfInterest();
 
-// const { addItem } = useCart();
-// const { addLovedItem } = useLovedProducts();
+  const handleAddToInterest = async () => {
+    if (!user) {
+      alert("Debes iniciar sesión para guardar en tu lista de interés");
+      return;
+    }
 
+    await addBookOfInterest(product.id);
+  };
+
+  console.log("Renderizando InfoProduct con product:", product);
   return (
     <div className="px-6">
       <div className="justify-between mb-3 sm:flex">
@@ -48,10 +53,15 @@ const { handleAddToCart } = useAddToCart();
       )}
 
       <Separator className="my-4" />
+
       <p className="my-4 text-2xl">{formatPrice(product.price)}</p>
-      <Button className="w-full" onClick={() => handleAddToCart(product)} >
-        Me interesa
-      </Button>
+      <button
+        className="w-full bg-black text-white py-2 rounded" 
+        disabled={loading}
+        onClick={handleAddToInterest} 
+      >
+          {loading ? 'Agregando...' : 'Me interesa'}
+      </button>
     </div>
   );
 }

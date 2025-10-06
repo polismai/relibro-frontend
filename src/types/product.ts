@@ -11,6 +11,7 @@ export type BookUserType = {
   firstName: string;
   lastName: string;
   email: string;
+  contactPhone: string;
   role: string;
 };
 
