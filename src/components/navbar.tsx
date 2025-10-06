@@ -5,10 +5,10 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation';
 import { useAuth } from "../../context/AuthProvider";
-import { useCart } from "@/hooks/use-cart";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useState } from "react";
+import { useGetBooksOfInterest } from "@/api/getBooksOfInterest";
 
 const dataNavbar = [
   {
@@ -32,8 +32,8 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const cart = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const { interestedBooks } = useGetBooksOfInterest(user?.id);
 
   return (
     <div className="bg-stone-300 w-full relative z-50">
@@ -109,7 +109,7 @@ const Navbar = () => {
             )}
           </div>
           
-          {cart.items.length === 0 ? 
+          {interestedBooks.length === 0 ? 
            <Heart
             strokeWidth="1"
             className="cursor-pointer hover:text-white transition-colors"
@@ -127,7 +127,7 @@ const Navbar = () => {
                 className="w-6 h-6 text-red-500"
                 aria-label="Ir a seleccionados"
               />
-              <span className="text-sm">{cart.items.length}</span>
+              <span className="text-sm">{interestedBooks.length}</span>
             </div>
           )}
          

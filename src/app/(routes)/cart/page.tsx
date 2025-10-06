@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/formatPrice";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../../context/AuthProvider";
+import { deleteBookOfInterest } from "@/api/deleteBookOfInterest";
 
 
 const CartPage = () => {
@@ -22,6 +23,14 @@ const CartPage = () => {
     );
   }
 
+  const handleRemoveInterest = async (bookId: string) => {
+    try {
+      await deleteBookOfInterest(bookId);
+    } catch (error) {
+      console.error("Error eliminando interés:", error);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto mt-8 px-4">
       <h1 className="text-3xl font-bold mb-6">Tus libros de interés</h1>
@@ -34,7 +43,7 @@ const CartPage = () => {
           >
             <button
               className="absolute top-3 right-3 p-2 rounded-full bg-white shadow hover:bg-gray-100 transition flex items-center justify-center"
-              onClick={() => removeItem(book.id)}
+              onClick={() => handleRemoveInterest(interest.id)}
             >
               <X size={18} />
             </button>
