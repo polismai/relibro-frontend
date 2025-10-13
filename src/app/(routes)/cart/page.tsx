@@ -4,15 +4,24 @@
 import { useGetBooksOfInterest } from "@/api/getBooksOfInterest";
 import { formatPrice } from "@/lib/formatPrice";
 import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "../../../../context/AuthProvider";
 import { deleteBookOfInterest } from "@/api/deleteBookOfInterest";
+import { useState } from "react";
+import SellerInfo from "./components/seller-info";
 
 
 const CartPage = () => {
-  const router = useRouter();
   const { user } = useAuth(); 
   const { interestedBooks } = useGetBooksOfInterest(user?.id);
+  const [openContacts, setOpenContacts] = useState<string[]>([]);
+
+  const toggleContact = (bookId: string) => {
+    setOpenContacts((prev) =>
+      prev.includes(bookId)
+        ? prev.filter((id) => id !== bookId)
+        : [...prev, bookId]
+    );
+  };
 
   if (interestedBooks.length === 0) {
     return (
@@ -33,7 +42,7 @@ const CartPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto mt-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">Tus libros de interés</h1>
+      <h1 className="text-2xl font-bold mb-6">Mis libros de interés</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {interestedBooks.map((interest) => (
@@ -48,15 +57,6 @@ const CartPage = () => {
               <X size={18} />
             </button>
 
-            {/* Imagen */}
-            {/* <div className="w-full h-48 overflow-hidden">
-              <img
-                src={interest.book.images[0]?.url || "/placeholder.jpg"}
-                alt={interest.book.title}
-                className="w-full h-full object-cover"
-              />
-            </div> */}
-
             {/* Info del libro */}
             <div className="p-4 flex-1 flex flex-col justify-between">
               <div>
@@ -64,15 +64,20 @@ const CartPage = () => {
                 <p className="text-green-600 font-semibold mt-1">{formatPrice(interest.book.price)}</p>
               </div>
 
-              {/* Boton de contacto */}
-              <div className="mt-4">
+             <div className="mt-4">
                 <button 
                   className="w-full px-3 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
-                  onClick={() => router.push(`/book/${interest.book.id}/contact`)}
+                  onClick={() => toggleContact(interest.book.id)}
                 >
-                  Contactar al vendedor
+                  {openContacts.includes(interest.book.id)
+                    ? "Ocultar contacto"
+                    : "Ver contacto"}
                 </button>
-              </div>
+
+                {openContacts.includes(interest.book.id) && (
+                  <SellerInfo seller={interest.book.user} />
+                )}
+              </div> 
             </div>
           </div>
         ))}

@@ -12,6 +12,7 @@ export type BookUserType = {
   lastName: string;
   email: string;
   contactPhone: string;
+  department: string;
   role: string;
 };
 

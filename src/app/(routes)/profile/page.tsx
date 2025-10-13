@@ -7,8 +7,6 @@ import BookCardUser from "./components/book-card-user";
 import { useEffect, useState } from "react";
 import { getUser } from "@/api/getUser";
 import { ProfileType } from "@/types/profile";
-import BookCardInterest from "./components/book-card-interest";
-import { useGetBooksOfInterest } from "@/api/getBooksOfInterest";
 
 /* eslint-disable @next/next/no-img-element */
 export default function ProfilePage() {
@@ -17,7 +15,6 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [loadinProfile, setLoadingProfile] = useState(true);
   const { books, loading } = useGetBooksByUser(user?.id); 
-  const { interestedBooks, loading: loadingInterested } = useGetBooksOfInterest(user?.id);
 
   useEffect(() => {
     if (user?.id) {
@@ -71,7 +68,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Libros de interés */}
-      <div>
+      {/* <div>
         <h2 className="text-xl font-semibold mb-4">Libros de mi interés</h2>
         {loadingInterested ? (
           <p>Cargando libros...</p>
@@ -84,7 +81,7 @@ export default function ProfilePage() {
             ))}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
